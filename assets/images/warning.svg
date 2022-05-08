@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Repeat_Grid_1" data-name="Repeat Grid 1" clip-path="url(#clip-path)">
+    <g id="Group_774" data-name="Group 774" transform="translate(-3941 3637)">
+      <g id="Group_768" data-name="Group 768" transform="translate(1760.343 -467.657)">
+        <g id="Ellipse_45" data-name="Ellipse 45" transform="translate(2180.657 -3169.343)" fill="none" stroke="#ffb300" stroke-width="4">
+          <circle cx="30" cy="30" r="30" stroke="none"/>
+          <circle cx="30" cy="30" r="28" fill="none"/>
+        </g>
+      </g>
+      <g id="Group_765" data-name="Group 765" transform="translate(-1223.045 1326.581)">
+        <path id="Path_107" data-name="Path 107" d="M208.441,528.763c.022,2.283.631,18.719,13.284,21.685,12.659-2.967,13.262-19.4,13.284-21.685-6.762-.631-12.136-6.348-13.284-7.657C220.577,522.415,215.2,528.132,208.441,528.763Z" transform="translate(4972.348 -5469.312)" fill="#ffb300"/>
+        <path id="Path_108" data-name="Path 108" d="M191.015,500.977l-.23-.053c-20.233-4.654-19.821-31.924-19.814-32.2l.02-.932.929-.067c10.187-.741,18.217-10.5,18.3-10.6l.8-.986.8.986c.08.1,8.045,9.857,18.3,10.6l.929.067.021.932c.006.275.379,27.553-19.815,32.2Zm-19.616-32.8-.012.553c-.006.272-.414,27.205,19.492,31.784l.136.032.136-.032c19.867-4.57,19.5-31.512,19.492-31.784l-.012-.554-.552-.04c-10.434-.759-18.51-10.657-18.591-10.757l-.474-.585-.473.587c-.081.1-8.225,10-18.59,10.756Z" transform="translate(5003.03 -5412.138)" fill="#ffb300"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "214938933059",
+    "firebase_url": "https://masotti-d39ba.firebaseio.com",
+    "project_id": "masotti-d39ba",
+    "storage_bucket": "masotti-d39ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214938933059:android:8e2b66127948436ed3c1f6",
+        "android_client_info": {
+          "package_name": "com.flexsolutionsjo.masotti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214938933059-0c8eg7eat4a9jqq685mg2krdoe5bbpa4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzX7Sa0Jjb5IVK9tkdPA8mxeYgJpEZdYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214938933059-0c8eg7eat4a9jqq685mg2krdoe5bbpa4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
