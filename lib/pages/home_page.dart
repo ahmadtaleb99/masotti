@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -533,6 +535,7 @@ class HomePageState extends State<HomePage>
       if (response.statusCode == 200) {
         homePageData = HomePageData();
         var data = jsonDecode(response.body);
+        log(response.body.toString());
         if (data['status']) {
           data = data['data'];
           var homePageSlider = data['homepage_sliders'] as List;

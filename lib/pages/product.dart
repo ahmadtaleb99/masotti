@@ -77,10 +77,8 @@ class ProductPageState extends State<ProductPage> {
     _existedColorList.clear();
     _isSelectedColorsList.clear();
     _sizeColorsList.clear();
-    _existedColorList.addAll(existedSize.toList());
     print(_existedColorList.toString() + ' existed color list ');
-    _isSelectedColorsList.addAll(isSelectedSizes);
-
+    // _isSelectedColorsList.addAll(isSelectedSizes);
     for (int variantIndex = 0; variantIndex < product.variants!.length; variantIndex++) {
       for (int colorIndex = 0; colorIndex < product.variants!.values.elementAt(variantIndex).length; colorIndex++) {
         String color = product.variants!.values
@@ -92,25 +90,30 @@ class ProductPageState extends State<ProductPage> {
           print('if (!sizeColorsList.contains(color) && sizeValue == size)  : true ');
           _sizeColorsList.add(color);
         }
+        print('_sizeColorsList.toString()  ${_sizeColorsList.toString()}');
       }
     }
 
-
-
     log('colors :::: ${_colors.toString()}    sizeColorsList :::: ${_sizeColorsList.toString()}     existedColorList :::: ${_existedColorList.toString()}');
-
     log(' lengths : : : :: colors :::: ${_colors.length}    sizeColorsList :::: ${_sizeColorsList.length}     existedColorList :::: ${_existedColorList.length}');
+      for(var item in _colors)
+        {
+          _existedColorList.add(false);
+          _isSelectedColorsList.add(false);
 
+        }
     for (int i = 0; i < _colors.length; i++) {
       for (int j = 0; j < _sizeColorsList.length; j++)  {
         if (_colors[i] == _sizeColorsList[j])
         {
-          _existedColorList[i]= true ;
+          _existedColorList[i] = true  ;
           log('match i$i  j$j  ');
 
         }
-        else
-        log(' no  match   i$i  j$j ');
+        else{
+          log('no match i$i  j$j   ');
+
+        }
 
       }
 
@@ -648,6 +651,10 @@ class ProductPageState extends State<ProductPage> {
                                           children: List.generate(
                                               _colors.length,
                                                   (colorIndex) {
+                                                print('_colors.length  ${_colors.length}');
+                                                print("colorIndex ${colorIndex}");
+                                                print("colorIndex ${_existedColorList.toString()}");
+
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
@@ -732,8 +739,8 @@ class ProductPageState extends State<ProductPage> {
                                                                   ],
                                                                 ),
                                                               )
-                                                                  : _selectedColor ==
-                                                                  _colors[colorIndex]
+                                                                  : (_selectedColor ==
+                                                                  _colors[colorIndex])
                                                                   ? Positioned(
                                                                 left: 0,
                                                                 right: 0,

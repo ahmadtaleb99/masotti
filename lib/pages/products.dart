@@ -52,6 +52,7 @@ class ProductsPageState extends State<ProductsPage> {
 
   @override
   void initState() {
+    print('inited');
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -144,16 +145,20 @@ class ProductsPageState extends State<ProductsPage> {
   }
 
   Future getProducts(categoryId, subCategoryId, page) async {
+    print('hon');
     String url = 'get-products-of-' +
         (categoryId != null
             ? 'category?category_id=$categoryId'
             : 'sub-category2?sub_category_id=$subCategoryId' + '&page=$page');
     final response = await http.get(Uri.parse(Constants.apiUrl + url),
         headers: {'referer': Constants.apiReferer});
+    print(response.body);
 
     if (response.statusCode == 200) {
+
       var data = jsonDecode(response.body);
       if (data['status']) {
+        print('true');
         data = data['data'] as List;
         List<ProductWidget> products = [];
         for (int i = 0; i < data.length; i++) {
@@ -168,6 +173,7 @@ class ProductsPageState extends State<ProductsPage> {
         }
         return products;
       }
+      print('not true');
       return data['message'].toString();
     }
     return Constants.requestErrorMessage;
