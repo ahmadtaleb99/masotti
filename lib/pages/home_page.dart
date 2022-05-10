@@ -531,11 +531,10 @@ class HomePageState extends State<HomePage>
       HomePageData homePageData;
       final response = await http.get(Uri.parse((Constants.apiUrl + url)),
           headers: {'referer': Constants.apiReferer});
-      print(response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         homePageData = HomePageData();
         var data = jsonDecode(response.body);
-        log(response.body.toString());
         if (data['status']) {
           data = data['data'];
           var homePageSlider = data['homepage_sliders'] as List;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -152,7 +154,7 @@ class _SubCategoriesPageState extends State<SubCategoriesPage> {
       final String url = 'get-sub-categories?category_id=$categoryId';
       final response = await http.get(Uri.parse(Constants.apiUrl + url) ,
           headers: {'referer': Constants.apiReferer});
-
+        log(response.body);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['status']) {

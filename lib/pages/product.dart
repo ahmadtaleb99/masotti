@@ -162,6 +162,7 @@ class ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
+    print('inited');
     super.initState();
     getCustomerRequiredInfo();
     future = getProduct(id);
@@ -1072,6 +1073,7 @@ class ProductPageState extends State<ProductPage> {
 
         return product;
       }
+
       return data['message'].toString();
     }
     return Constants.requestErrorMessage;

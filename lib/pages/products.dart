@@ -80,6 +80,7 @@ class ProductsPageState extends State<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('products page ');
     double containerWidth =
         MediaQuery.of(context).size.width - (Constants.doublePadding);
     double spacing = containerWidth / 25;
