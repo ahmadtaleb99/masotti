@@ -139,31 +139,26 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                 return Container();
               }
               List<ProductWidget> products = response as List<ProductWidget>;
+
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                        child: Wrap(
-                      spacing: spacing -
-                          (MediaQuery.of(context).devicePixelRatio > 1.2
-                              ? 4
-                              : 0),
-                      children: List.generate(products.length, (index) {
-                        return GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductPage(
-                                        id: products[index].id,
-                                      ))),
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: Constants.padding),
-                            child: products[index],
-                          ),
-                        );
-                      }),
-                    )),
+                        width: double.infinity,
+                        child:  Wrap(
+                          alignment: products.length == 1 ?  WrapAlignment.center : WrapAlignment.start,
+                                spacing: spacing -
+                                    (MediaQuery.of(context).devicePixelRatio >
+                                            1.2
+                                        ? 4
+                                        : 0),
+                                children:
+                                    List.generate(products.length, (index) {
+                                  return SearchResultItem(
+                                      product: products[index]);
+                                }),
+                              )),
                   ],
                 ),
               );
@@ -217,5 +212,30 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       _searchStream.add(0);
       return 0;
     }
+  }
+}
+
+class SearchResultItem extends StatelessWidget {
+  const SearchResultItem({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final ProductWidget product;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProductPage(
+                    id: product.id,
+                  ))),
+      child: Container(
+        margin: EdgeInsets.only(bottom: Constants.padding),
+        child: product,
+      ),
+    );
   }
 }

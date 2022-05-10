@@ -70,55 +70,49 @@ class ProductPageState extends State<ProductPage> {
 
     print( product.variants!.length.toString() + ' variants  : ');
     print( product.variants!.toString() + ' variants  : ');
-    for (int i = 0; i < product.variants!.length; i++) {
+    for (int i = 0; i < product.variants!.values.length; i++) {
       existedSize.add(false);
       isSelectedSizes.add(false);
     }
     existedColorList.clear();
     isSelectedColorsList.clear();
     sizeColorsList.clear();
-    existedColorList.addAll(existedSize.toList());
-    print(existedColorList);
+    // existedColorList.addAll(existedSize.toList());
+    print(existedColorList.toString() + ' existed color list ');
     isSelectedColorsList.addAll(isSelectedSizes);
 
-    for (int variantIndex = 0;
-    variantIndex < product.variants!.length;
-    variantIndex++) {
-      for (int colorIndex = 0;
-      colorIndex <
-          product.variants!.values
-              .elementAt(variantIndex)
-              .length;
-      colorIndex++) {
+    for (int variantIndex = 0; variantIndex < product.variants!.length; variantIndex++) {
+      for (int colorIndex = 0; colorIndex < product.variants!.values.elementAt(variantIndex).length; colorIndex++) {
         String color = product.variants!.values
             .elementAt(variantIndex)[colorIndex]['color']
             .toString();
         String size =
         product.variants!.keys.elementAt(variantIndex).toString();
         if (!sizeColorsList.contains(color) && sizeValue == size) {
+          print('if (!sizeColorsList.contains(color) && sizeValue == size)  : true ');
           sizeColorsList.add(color);
         }
       }
     }
+
+
+
     log('colors :::: ${colors.toString()}    sizeColorsList :::: ${sizeColorsList.toString()}     existedColorList :::: ${existedColorList.toString()}');
 
     log(' lengths : : : :: colors :::: ${colors.length}    sizeColorsList :::: ${sizeColorsList.length}     existedColorList :::: ${existedColorList.length}');
 
     for (int i = 0; i < colors.length; i++) {
-      log('i is $i');
       for (int j = 0; j < sizeColorsList.length; j++)  {
-        log('j is $j');
         if (colors[i] == sizeColorsList[j])
         {
-          log('match');
-          existedColorList[i] = true;
-          log('match');
+          existedColorList.add(true) ;
+          log('match i$i  j$j  ');
 
         }
-        log(' no  match');
+        else
+        log(' no  match   i$i  j$j ');
 
       }
-      log('colors :::: ${colors.toString()}    sizeColorsList :::: ${sizeColorsList.toString()}     existedColorList :::: ${existedColorList.toString()}');
 
     }
     print('hom');
