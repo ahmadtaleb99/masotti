@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
@@ -40,6 +42,7 @@ class ProductsPageState extends State<ProductsPage> {
 
   int? itemsInCart = 0;
   bool authenticated = false;
+  bool _noItems = false;
 
   getItemsInCartCount() async {
     final prefs = await SharedPreferences.getInstance();
@@ -109,7 +112,8 @@ class ProductsPageState extends State<ProductsPage> {
             color: Constants.whiteColor,
             height: double.infinity,
             padding: EdgeInsets.all(Constants.padding),
-            child: PagedGridView<int, ProductWidget>(
+            child: _noItems ? Text('no items found '): PagedGridView<int, ProductWidget>(
+              showNewPageErrorIndicatorAsGridChild: false,
               pagingController: _pagingController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1.15,
@@ -122,6 +126,7 @@ class ProductsPageState extends State<ProductsPage> {
               builderDelegate: PagedChildBuilderDelegate<ProductWidget>(
                   itemBuilder: (context, item, index) => GestureDetector(
                         onTap: () {
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -153,7 +158,7 @@ class ProductsPageState extends State<ProductsPage> {
             : 'sub-category2?sub_category_id=$subCategoryId' + '&page=$page');
     final response = await http.get(Uri.parse(Constants.apiUrl + url),
         headers: {'referer': Constants.apiReferer});
-    print(response.body);
+    log(response.body);
 
     if (response.statusCode == 200) {
 
@@ -175,6 +180,7 @@ class ProductsPageState extends State<ProductsPage> {
         return products;
       }
       print('not true');
+      _noItems = true;
       return data['message'].toString();
     }
     return Constants.requestErrorMessage;
