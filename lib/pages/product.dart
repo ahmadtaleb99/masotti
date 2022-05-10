@@ -49,37 +49,37 @@ class ProductPageState extends State<ProductPage> {
   int? itemsInCart = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  List<String> colors = [];
-  List<String> sizeColorsList = [];
-  List<String> sizes = [];
-  var existedColor = [];
-  var isSelectedColors =[];
-  List<bool> existedColorList = [];
-  var isSelectedColorsList =[];
-  String? selectedSize;
-  String? selectedColor;
+  List<String> _colors = [];
+  List<String> _sizeColorsList = [];
+  List<String> _sizes = [];
+  var _existedColor = [];
+  var _isSelectedColors =[];
+  List<bool> _existedColorList = [];
+  var _isSelectedColorsList =[];
+  String? _selectedSize;
+  String? _selectedColor;
 
   ProductPageState({
     required this.id,
   });
 
-  getSizeColors(String? sizeValue, Product product) {
+  _getSizeColors(String? sizeValue, Product product) {
     List<bool> existedSize =[];
     var isSelectedSizes =[];
-    selectedColor = null;
-
+    _selectedColor = null;
     print( product.variants!.length.toString() + ' variants  : ');
     print( product.variants!.toString() + ' variants  : ');
-    for (int i = 0; i < product.variants!.values.length; i++) {
+    for (int i = 0; i < product.variants!.length; i++) {
       existedSize.add(false);
       isSelectedSizes.add(false);
     }
-    existedColorList.clear();
-    isSelectedColorsList.clear();
-    sizeColorsList.clear();
-    // existedColorList.addAll(existedSize.toList());
-    print(existedColorList.toString() + ' existed color list ');
-    isSelectedColorsList.addAll(isSelectedSizes);
+
+    _existedColorList.clear();
+    _isSelectedColorsList.clear();
+    _sizeColorsList.clear();
+    _existedColorList.addAll(existedSize.toList());
+    print(_existedColorList.toString() + ' existed color list ');
+    _isSelectedColorsList.addAll(isSelectedSizes);
 
     for (int variantIndex = 0; variantIndex < product.variants!.length; variantIndex++) {
       for (int colorIndex = 0; colorIndex < product.variants!.values.elementAt(variantIndex).length; colorIndex++) {
@@ -88,24 +88,24 @@ class ProductPageState extends State<ProductPage> {
             .toString();
         String size =
         product.variants!.keys.elementAt(variantIndex).toString();
-        if (!sizeColorsList.contains(color) && sizeValue == size) {
+        if (!_sizeColorsList.contains(color) && sizeValue == size) {
           print('if (!sizeColorsList.contains(color) && sizeValue == size)  : true ');
-          sizeColorsList.add(color);
+          _sizeColorsList.add(color);
         }
       }
     }
 
 
 
-    log('colors :::: ${colors.toString()}    sizeColorsList :::: ${sizeColorsList.toString()}     existedColorList :::: ${existedColorList.toString()}');
+    log('colors :::: ${_colors.toString()}    sizeColorsList :::: ${_sizeColorsList.toString()}     existedColorList :::: ${_existedColorList.toString()}');
 
-    log(' lengths : : : :: colors :::: ${colors.length}    sizeColorsList :::: ${sizeColorsList.length}     existedColorList :::: ${existedColorList.length}');
+    log(' lengths : : : :: colors :::: ${_colors.length}    sizeColorsList :::: ${_sizeColorsList.length}     existedColorList :::: ${_existedColorList.length}');
 
-    for (int i = 0; i < colors.length; i++) {
-      for (int j = 0; j < sizeColorsList.length; j++)  {
-        if (colors[i] == sizeColorsList[j])
+    for (int i = 0; i < _colors.length; i++) {
+      for (int j = 0; j < _sizeColorsList.length; j++)  {
+        if (_colors[i] == _sizeColorsList[j])
         {
-          existedColorList.add(true) ;
+          _existedColorList[i]= true ;
           log('match i$i  j$j  ');
 
         }
@@ -116,47 +116,42 @@ class ProductPageState extends State<ProductPage> {
 
     }
     print('hom');
-    print(sizeColorsList.toString());
-    print(existedColorList.toString() + ' existed color list NOW  ');
+    print(_sizeColorsList.toString());
+    print(_existedColorList.toString() + ' existed color list NOW  ');
 
   }
 
-  void getProductSizeList(Product product) {
+  void _getProductSizeList(Product product) {
     print('getProductSizeList');
     if (product.variants != null) {
       for (int i = 0; i < product.variants!.length; i++) {
         if (product.variants!.keys != null) {
-          sizes.add(product.variants!.keys.elementAt(i).toString());
+          _sizes.add(product.variants!.keys.elementAt(i).toString());
         }
       }
-      selectedSize = sizes[0];
-      for (int variantIndex = 0;
-      variantIndex < product.variants!.length;
-      variantIndex++) {
-        for (int colorIndex = 0;
-        colorIndex <
-            product.variants!.values
-                .elementAt(variantIndex)
-                .length;
-        colorIndex++) {
+      _selectedSize = _sizes[0];
+      for (int variantIndex = 0; variantIndex < product.variants!.length; variantIndex++) {
+        for (int colorIndex = 0; colorIndex < product.variants!.values.elementAt(variantIndex).length; colorIndex++) {
           String color = product.variants!.values
               .elementAt(variantIndex)[colorIndex]['color']
               .toString();
-          if (!colors.contains(color)) {
-            colors.add(color);
+          if (!_colors.contains(color)) {
+            _colors.add(color);
           }
         }
       }
-      getSizeColors(selectedSize, product);
+      print(_sizes.toString());
+      print(_colors.toString());
+      _getSizeColors(_selectedSize, product);
     }
   }
 
-  void selectColor(int index) {
-    if (isSelectedColorsList[index]) {} else {
-      isSelectedColorsList[index] = true;
-      for (int i = 0; i < isSelectedColorsList.length; i++) {
+  void _selectColor(int index) {
+    if (_isSelectedColorsList[index]) {} else {
+      _isSelectedColorsList[index] = true;
+      for (int i = 0; i < _isSelectedColorsList.length; i++) {
         if (i != index) {
-          isSelectedColorsList[i] = false;
+          _isSelectedColorsList[i] = false;
         }
       }
     }
@@ -194,8 +189,8 @@ class ProductPageState extends State<ProductPage> {
                 salesPrice: tempProduct.salesPrice,
                 dropDownVariants: tempProduct.dropDownVariants,
                 variants: tempProduct.variants,
-                selectedColor: selectedColor,
-                selectedSize: selectedSize,
+                selectedColor: _selectedColor,
+                selectedSize: _selectedSize,
                 scaffoldKey: _scaffoldKey,
               )).then((value) => setState(() {}));
       setState(() {
@@ -539,9 +534,9 @@ class ProductPageState extends State<ProductPage> {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      selectedSize =
-                                                      sizes[variantIndex];
-                                                      getSizeColors(
+                                                      _selectedSize =
+                                                      _sizes[variantIndex];
+                                                      _getSizeColors(
                                                           product.variants!.keys
                                                               .elementAt(
                                                               variantIndex)
@@ -579,7 +574,7 @@ class ProductPageState extends State<ProductPage> {
                                                                       .borderRadius /
                                                                       2)),
                                                           border: Border.all(
-                                                              width: selectedSize ==
+                                                              width: _selectedSize ==
                                                                   product
                                                                       .variants!
                                                                       .keys
@@ -589,7 +584,7 @@ class ProductPageState extends State<ProductPage> {
                                                                   ? 2
                                                                   : 1,
                                                               color:
-                                                              selectedSize ==
+                                                              _selectedSize ==
                                                                   product
                                                                       .variants!
                                                                       .keys
@@ -651,15 +646,15 @@ class ProductPageState extends State<ProductPage> {
                                         child: ListView(
                                           scrollDirection: Axis.horizontal,
                                           children: List.generate(
-                                              colors.length,
+                                              _colors.length,
                                                   (colorIndex) {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      if (existedColorList[colorIndex]) {
-                                                        selectColor(colorIndex);
-                                                        selectedColor =
-                                                        colors[colorIndex];
+                                                      if (_existedColorList[colorIndex]) {
+                                                        _selectColor(colorIndex);
+                                                        _selectedColor =
+                                                        _colors[colorIndex];
                                                       }
                                                     });
                                                   },
@@ -674,8 +669,8 @@ class ProductPageState extends State<ProductPage> {
                                                         Icon(
                                                             Icons
                                                                 .brightness_1,
-                                                            size: selectedColor ==
-                                                                colors[colorIndex]
+                                                            size: _selectedColor ==
+                                                                _colors[colorIndex]
                                                                 ? 37
                                                                 : 31,
                                                             color: Colors
@@ -690,17 +685,17 @@ class ProductPageState extends State<ProductPage> {
                                                               Icon(
                                                                   Icons
                                                                       .brightness_1,
-                                                                  size: selectedColor ==
-                                                                      colors[colorIndex]
+                                                                  size: _selectedColor ==
+                                                                      _colors[colorIndex]
                                                                       ? 36
                                                                       : 30,
                                                                   color: Color(
                                                                       int
                                                                           .parse(
                                                                           '0xFF' +
-                                                                              colors[colorIndex]))
+                                                                              _colors[colorIndex]))
                                                               ),
-                                                              !existedColorList[colorIndex]
+                                                              !_existedColorList[colorIndex]
                                                                   ? Positioned(
                                                                 left: 0,
                                                                 right: 0,
@@ -737,8 +732,8 @@ class ProductPageState extends State<ProductPage> {
                                                                   ],
                                                                 ),
                                                               )
-                                                                  : selectedColor ==
-                                                                  colors[colorIndex]
+                                                                  : _selectedColor ==
+                                                                  _colors[colorIndex]
                                                                   ? Positioned(
                                                                 left: 0,
                                                                 right: 0,
@@ -1065,7 +1060,7 @@ class ProductPageState extends State<ProductPage> {
         print(product.nameAr);
         print(product.nameAr);
         tempProduct = product;
-        getProductSizeList(product);
+        _getProductSizeList(product);
         print(product.nameAr.toString());
 
         return product;
