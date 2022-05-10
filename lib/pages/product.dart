@@ -117,6 +117,8 @@ class ProductPageState extends State<ProductPage> {
     }
     print('hom');
     print(sizeColorsList.toString());
+    print(existedColorList.toString() + ' existed color list NOW  ');
+
   }
 
   void getProductSizeList(Product product) {
@@ -654,8 +656,7 @@ class ProductPageState extends State<ProductPage> {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      if (existedColorList[
-                                                      colorIndex]) {
+                                                      if (existedColorList[colorIndex]) {
                                                         selectColor(colorIndex);
                                                         selectedColor =
                                                         colors[colorIndex];
@@ -699,8 +700,7 @@ class ProductPageState extends State<ProductPage> {
                                                                           '0xFF' +
                                                                               colors[colorIndex]))
                                                               ),
-                                                              !existedColorList[
-                                                              colorIndex]
+                                                              !existedColorList[colorIndex]
                                                                   ? Positioned(
                                                                 left: 0,
                                                                 right: 0,
