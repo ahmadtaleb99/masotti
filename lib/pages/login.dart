@@ -334,9 +334,9 @@ class LoginPageState extends State<LoginPage> {
 
     final String url = 'login-customer';
     final FirebaseMessaging fcm = FirebaseMessaging.instance;
-    final tokenResponse = await (fcm.getToken() as FutureOr<String>);
+    final tokenResponse = await (fcm.getToken() as Future<String?>);
     credentials['device_token'] =
-        tokenResponse.isNotEmpty ? tokenResponse : null;
+        tokenResponse != null ? tokenResponse :null;
 
     final response = await http.post(Uri.parse(Constants.apiUrl + url),
         body: credentials, headers: {'referer': Constants.apiReferer});

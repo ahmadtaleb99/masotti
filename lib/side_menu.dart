@@ -577,7 +577,7 @@ class SideMenuState extends State<SideMenu> with TickerProviderStateMixin {
               (Route<dynamic> route) => false);
         }
       },
-      color: Color(0xFFFFB300),
+      color: Constants.exitDialogColor,
       icon: "assets/images/warning.svg",
     ).showCustomDialog();
   }

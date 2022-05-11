@@ -637,7 +637,7 @@ class HomePageState extends State<HomePage>
         onPressedOkButton: () {
           SystemNavigator.pop();
         },
-        color: Color(0xFFFFB300),
+        color: Constants.exitDialogColor,
         icon: "assets/images/warning.svg",
       ).showCustomDialog();
       return Future.value(false);

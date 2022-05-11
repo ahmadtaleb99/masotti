@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class Constants{
   static final String apiUrl                  = 'http://flexsolutions.biz/apps/masotti/api-v2/';
@@ -7,10 +9,9 @@ class Constants{
   static final String apiReferer              = 'http://flexsolution.biz';
   static final String requestErrorMessage     = 'Error ocurred while getting data';
   static final String requestNoDataMessage    = 'No results found';
-
   static final Color? borderColor              = Colors.grey[200];
   static final Color whiteColor               = Colors.white;
-  static final Color identityColor            = Color(0xFF414141); 
+  static final Color identityColor            = Color(0xFF414141);
   static final Color linkColor                = Colors.blueAccent;
   static final Color redColor                 = Color(0xFFEE1D23);
   static final Color greyColor                = Color(0xFF707070);
@@ -60,6 +61,7 @@ class Constants{
   static final Color orderStatusDeliveringColor                = Color(0xFF00B300);
   static final Color orderStatusDeliveredColor                 = Color(0xFF00B300);
   static final Color orderStatusNotDeliveredColor              = Color(0xFFD60CBC);
+  static final Color exitDialogColor     = Color(0xFFFFB300);
 
 
   static  String day(int seconds) { 

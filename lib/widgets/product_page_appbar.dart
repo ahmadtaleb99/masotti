@@ -48,7 +48,7 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
             width: containerWidth,
             height: widget.height! - 10,
             margin: EdgeInsets.only(bottom: Constants.padding),
-            child:  CarouselSliderWidget(images: widget.product!.images!.map((e) => e['path']).toList()!,
+            child:  CarouselSliderWidget(images: widget.product!.images!.map((e) => e['path']).toList(),
               onImageTap: (index){
                 showDialog(
                     context: context,
