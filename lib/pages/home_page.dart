@@ -190,7 +190,7 @@ class HomePageState extends State<HomePage>
                               10 *
                               2),
                       icon: MyFlutterApp.component_1___79,
-                      images: homePageData.sliderImages,
+                      images: homePageData.sliderImages!,
                       products: homePageData.sliderProducts,
                       scaffoldKey: _scaffoldKey,
                       itemsInCart: itemsInCart,

@@ -7,7 +7,6 @@ import '../pages/search_results.dart';
 import '../assets/my_flutter_app_icons.dart';
 import '../constants.dart';
 
-// ignore: must_be_immutable
 class CustomAppBarWidget extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final BuildContext currentContext;

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:masotti/pages/product.dart';
+import 'package:masotti/widgets/carousel_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/cart.dart';
 import '../assets/my_flutter_app_icons.dart';
@@ -13,7 +11,7 @@ import '../pages/search_results.dart';
 class HomePageAppBarWidget extends StatefulWidget
     implements PreferredSizeWidget {
   final double? height;
-  final List<String>? images;
+  final List<String> images;
   final List<String>? products;
   final IconData? icon;
   final GlobalKey<ScaffoldState>? scaffoldKey;
@@ -22,7 +20,7 @@ class HomePageAppBarWidget extends StatefulWidget
 
   HomePageAppBarWidget(
       {this.height,
-      this.images,
+    required  this.images,
       this.products,
       this.icon,
       this.scaffoldKey,
@@ -60,104 +58,12 @@ class HomePageAppBarWidgetState extends State<HomePageAppBarWidget> {
             width: MediaQuery.of(context).size.width,
             height: widget.height! -
                 ((MediaQuery.of(context).size.width / 4 * 3) / 10),
-            child: Swiper(
+            child:
+                        CarouselSliderWidget(images: widget.images,products: widget.products,itemsInCart: widget.itemsInCart,
+                            cartIconExist: widget.cartIconExist,)
 
-              loop: widget.images!.length == 1 ? false : true,
-              itemCount: widget.images!.length,
-              itemBuilder: (context, index) {
-                return Container(
-                    child: GestureDetector(
-                  onTap: () async {
-                    final prefs =
-                    await SharedPreferences.getInstance();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProductPage(
-                                  id: widget.products![
-                                  index],
-                                ))).then(
-                          (value) => setState(() {
-                            widget.itemsInCart = prefs
-                                .getInt(Constants.keyNumberOfItemsInCart);
-                            widget.cartIconExist = prefs.getString(
-                                Constants.keyAccessToken) !=
-                                null
-                                ? true
-                                : false;
-                      }),
-                    );
-                  },
-                  child: Image.network(
-                    Constants.apiFilesUrl + widget.images![index],
-                    fit: BoxFit.fill,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                            backgroundColor: Colors.grey,
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                Constants.redColor),
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null),
-                      );
-                    },
-                  ),
-                ));
-              },
-              autoplay: true,
-              pagination: SwiperPagination(
-                alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.only(top: 10),
-                builder: SwiperCustomPagination(
-                    builder: (BuildContext context, SwiperPluginConfig config) {
-                  return Container(
-                    padding: EdgeInsets.only(bottom: 35),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        widget.images!.length,
-                        (index) => SizedBox(
-                          width: 25,
-                          height: 3,
-                          child: config.activeIndex == index
-                              ? Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 3),
-                                  child: DecoratedBox(
-                                    decoration:
-                                        BoxDecoration(color: Colors.white),
-                                  ),
-                                )
-                              : Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 3),
-                                  child: DecoratedBox(
-                                    decoration:
-                                        BoxDecoration(color: Colors.white54),
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),
-            // CachedNetworkImage(
-            //   imageUrl: Constants.apiFilesUrl + widget.images[],
-            //   fit: BoxFit.fill,
-            //   progressIndicatorBuilder: (context, url, downloadProgress){
-            //     return Center(
-            //       child: CircularProgressIndicator(
-            //         value: downloadProgress.progress
-            //       )
-            //     );
-            //   },
-            // ),
+
+
           ),
           Align(
             alignment: arabicLanguage ? Alignment.topRight : Alignment.topLeft,

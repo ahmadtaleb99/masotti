@@ -52,6 +52,7 @@ dependencies:
   share: ^2.0.4
   flutter_svg: ^1.0.3
   form_builder_validators: ^8.1.0
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:
