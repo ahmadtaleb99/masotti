@@ -30,7 +30,6 @@ dependencies:
   cupertino_icons: ^1.0.4
   shared_preferences: ^2.0.13
   datetime_picker_formfield: ^2.0.0
-  flutter_swiper: any
   http: ^0.13.4
   async: ^2.8.2
   auto_size_text: ^3.0.0

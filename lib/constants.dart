@@ -4,11 +4,6 @@ class Constants{
   static final String apiUrl                  = 'http://flexsolutions.biz/apps/masotti/api-v2/';
   static final String apiFilesUrl             = 'http://flexsolutions.biz/apps/masotti/';
 
-  // static final String apiUrl                  = 'http://flexsolutions.technology/masotti/api/';
-  // static final String apiFilesUrl             = 'http://flexsolutions.technology/masotti/';
-
-  // static final String apiUrl                  = 'http://192.168.0.190/masotti/api/';
-  // static final String apiFilesUrl             = 'http://192.168.0.190/masotti/';
   static final String apiReferer              = 'http://flexsolution.biz';
   static final String requestErrorMessage     = 'Error ocurred while getting data';
   static final String requestNoDataMessage    = 'No results found';

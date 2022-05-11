@@ -71,7 +71,6 @@ class MyFlutterApp {
   static const IconData adress_icons_address_name = IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData adress_icons_building = IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData adress_icons_district = IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData adress_icons_city = IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData returns___exchange = IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData adress_icons_floor = IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData returns___exchange_2 = IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);

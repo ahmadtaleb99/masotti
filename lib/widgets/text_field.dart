@@ -8,10 +8,10 @@ class CustomTextField extends StatelessWidget {
   final Function onSaved;
   final Function? onChanged;
   final IconData? icon;
-  double? iconSize;
-  Function? onSubmit;
-  TextInputAction? textInputAction;
-  String? initialValue;
+  final double? iconSize;
+  final Function? onSubmit;
+  final TextInputAction? textInputAction;
+  final  String? initialValue;
   bool isRequired = true;
   bool? isEmail = false;
   bool? isPassword = false;
