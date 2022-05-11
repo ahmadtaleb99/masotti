@@ -43,7 +43,6 @@ class ProductsPageState extends State<ProductsPage> {
 
   int? itemsInCart = 0;
   bool authenticated = false;
-  bool _noItems = false;
 
   getItemsInCartCount() async {
     final prefs = await SharedPreferences.getInstance();
@@ -69,7 +68,7 @@ class ProductsPageState extends State<ProductsPage> {
       final newItems =
           await getProducts(widget.categoryId, widget.subCategoryId, pageKey);
 
-      final isLastPage = newItems.length < _pageSize;
+      final isLastPage = newItems.length <= _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -78,7 +77,7 @@ class ProductsPageState extends State<ProductsPage> {
 
       }
     } catch (error) {
-      print(error);
+      _pagingController.error = error;
     }
   }
 
@@ -113,12 +112,15 @@ class ProductsPageState extends State<ProductsPage> {
             color: Constants.whiteColor,
             height: double.infinity,
             padding: EdgeInsets.all(Constants.padding),
-            child: _noItems ? RequestEmptyData(
+            child:
+            // _noItems ? RequestEmptyData(
+            //
+            //   message: Constants.requestNoDataMessage,
+            // )  :
+            PagedGridView<int, ProductWidget>(
 
-              message: Constants.requestNoDataMessage,
-            )  :  PagedGridView<int, ProductWidget>(
-
-            showNewPageErrorIndicatorAsGridChild: false,
+            showNewPageErrorIndicatorAsGridChild: true,
+              showNoMoreItemsIndicatorAsGridChild: true,
               pagingController: _pagingController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1.15,
@@ -150,6 +152,9 @@ class ProductsPageState extends State<ProductsPage> {
                         ),
                       ),
                 firstPageProgressIndicatorBuilder: (context) => ColoredCircularProgressIndicator(),
+                noItemsFoundIndicatorBuilder:  (_) =>     RequestEmptyData(
+                 message: Constants.requestNoDataMessage,
+               )  ,
                 newPageProgressIndicatorBuilder: (context) => ColoredCircularProgressIndicator(),
               ),
             ),
@@ -163,7 +168,9 @@ class ProductsPageState extends State<ProductsPage> {
         (categoryId != null
             ? 'category?category_id=$categoryId'
             : 'sub-category2?sub_category_id=$subCategoryId' + '&page=$page');
+    print (url);
     final response = await http.get(Uri.parse(Constants.apiUrl + url),
+
         headers: {'referer': Constants.apiReferer});
     log(response.body);
 
@@ -186,7 +193,7 @@ class ProductsPageState extends State<ProductsPage> {
         }
         return products;
       }
-     // else setState(() =>  _noItems = true);
+      return <ProductWidget>[];
 
 
     }
