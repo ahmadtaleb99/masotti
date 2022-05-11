@@ -5,18 +5,15 @@ import 'package:masotti/pages/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CarouselSliderWidget extends StatefulWidget {
-  List<String> images;
-  List<String>? products;
-  int? itemsInCart;
-  bool? cartIconExist;
+  List<dynamic> images;
+  void Function(int index)? onImageTap;
   @override
   _CarouselSliderWidgetState createState() => _CarouselSliderWidgetState();
 
   CarouselSliderWidget({
     required this.images,
-    required this.products,
-    required this.itemsInCart,
-    required this.cartIconExist,
+
+    this.onImageTap,
   });
 }
 
@@ -25,30 +22,16 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.images.first.toString());
+
     return Stack(
       children: [
         CarouselSlider(
-
             items: List.generate(
               widget.images.length,
               (index) => GestureDetector(
-                onTap: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProductPage(
-                                id: widget.products![index],
-                              ))).then(
-                    (value) => setState(() {
-                      widget.itemsInCart =
-                          prefs.getInt(Constants.keyNumberOfItemsInCart);
-                      widget.cartIconExist =
-                          prefs.getString(Constants.keyAccessToken) != null
-                              ? true
-                              : false;
-                    }),
-                  );
+                onTap: (){
+                          widget.onImageTap!(index);
                 },
                 child: Image.network(
                   Constants.apiFilesUrl + widget.images[index],
@@ -72,23 +55,20 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
               ),
             ),
             options: CarouselOptions(
-              aspectRatio: 16 / 9,
               viewportFraction: 1,
               initialPage: 0,
               height: double.infinity,
-
               enableInfiniteScroll: true,
               reverse: false,
               autoPlay: true,
               onPageChanged: (index, reason) {
-              setState(() {
-              _current = index;
-              });
+                setState(() {
+                  _current = index;
+                });
               },
               autoPlayInterval: Duration(seconds: 3),
               autoPlayAnimationDuration: Duration(milliseconds: 800),
               autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
               scrollDirection: Axis.horizontal,
             )),
         Positioned(
@@ -96,7 +76,6 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
           right: 0,
           left: 0,
           bottom: -250,
-
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -125,19 +104,6 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Swiper(
 //

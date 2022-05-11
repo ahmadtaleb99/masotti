@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:masotti/pages/product.dart';
 import 'package:masotti/widgets/carousel_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/cart.dart';
@@ -59,8 +60,27 @@ class HomePageAppBarWidgetState extends State<HomePageAppBarWidget> {
             height: widget.height! -
                 ((MediaQuery.of(context).size.width / 4 * 3) / 10),
             child:
-                        CarouselSliderWidget(images: widget.images,products: widget.products,itemsInCart: widget.itemsInCart,
-                            cartIconExist: widget.cartIconExist,)
+                        CarouselSliderWidget(images: widget.images,
+                          onImageTap: (index) async {
+
+
+                              final prefs = await SharedPreferences.getInstance();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProductPage(
+                                        id: widget.products![index],
+                                      ))).then(
+                                    (value) => setState(() {
+                                  widget.itemsInCart =
+                                      prefs.getInt(Constants.keyNumberOfItemsInCart);
+                                  widget.cartIconExist =
+                                  prefs.getString(Constants.keyAccessToken) != null
+                                      ? true
+                                      : false;
+                                }),
+                              );
+                            })
 
 
 
