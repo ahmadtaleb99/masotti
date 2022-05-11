@@ -119,7 +119,6 @@ class ProductsPageState extends State<ProductsPage> {
             )  :  PagedGridView<int, ProductWidget>(
 
             showNewPageErrorIndicatorAsGridChild: false,
-
               pagingController: _pagingController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1.15,
@@ -187,7 +186,9 @@ class ProductsPageState extends State<ProductsPage> {
         }
         return products;
       }
-      _noItems = true;
+     // else setState(() =>  _noItems = true);
+
+
     }
     return Constants.requestErrorMessage;
   }
