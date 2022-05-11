@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
+import 'package:masotti/widgets/request_empty_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import './product.dart';
@@ -74,10 +75,10 @@ class ProductsPageState extends State<ProductsPage> {
       } else {
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
+
       }
     } catch (error) {
       print(error);
-      _pagingController.error = error;
     }
   }
 
@@ -112,8 +113,13 @@ class ProductsPageState extends State<ProductsPage> {
             color: Constants.whiteColor,
             height: double.infinity,
             padding: EdgeInsets.all(Constants.padding),
-            child: _noItems ? Text('no items found '): PagedGridView<int, ProductWidget>(
-              showNewPageErrorIndicatorAsGridChild: false,
+            child: _noItems ? RequestEmptyData(
+
+              message: Constants.requestNoDataMessage,
+            )  :  PagedGridView<int, ProductWidget>(
+
+            showNewPageErrorIndicatorAsGridChild: false,
+
               pagingController: _pagingController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1.15,
@@ -124,6 +130,8 @@ class ProductsPageState extends State<ProductsPage> {
                 crossAxisCount: 2,
               ),
               builderDelegate: PagedChildBuilderDelegate<ProductWidget>(
+
+
                   itemBuilder: (context, item, index) => GestureDetector(
                         onTap: () {
 
@@ -179,9 +187,7 @@ class ProductsPageState extends State<ProductsPage> {
         }
         return products;
       }
-      print('not true');
       _noItems = true;
-      return data['message'].toString();
     }
     return Constants.requestErrorMessage;
   }
