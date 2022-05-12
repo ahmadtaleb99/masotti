@@ -488,7 +488,7 @@ class ProductPageState extends State<ProductPage> {
                                             GestureDetector(
                                               onTap: () =>
                                                   Share.share(
-                                                      'https://masotti.com/products/' +
+                                                      'https://flexsolutions.biz/apps/masotti/products/view?id=' +
                                                           product.id),
                                               child: Container(
                                                   margin: EdgeInsets.only(

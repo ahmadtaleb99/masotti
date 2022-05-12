@@ -35,6 +35,7 @@ import 'widgets/colored_circular_progress_indicator.dart';
 //   MyAppState().showNotification(
 //       notification.title, notification.body, notification.imageUrl);
 // }
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,7 +60,6 @@ class MyAppState extends State<MyApp> {
   final FirebaseMessaging fireBaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   bool redirectToChooseLanguagePage = false;
 
   Route<dynamic> getRoute(RouteSettings settings) {

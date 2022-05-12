@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import '../main.dart';
 import '../pages/sub_categories.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
 import '../widgets/custom_dialog.dart';
@@ -26,20 +27,15 @@ import '../side_menu.dart';
 import '../models/home_page.dart';
 import '../models/featured_product.dart';
 import '../widgets/who_are_we_button.dart';
-
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:meta/meta.dart';
-// import 'dart:async';
-// import 'dart:io';
-// import 'dart:ui';
-// import 'package:path_provider/path_provider.dart';
-
 import 'package:flutter/scheduler.dart' as Scheduler;
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links/uni_links.dart' as UniLinks;
 import 'dart:async';
 
-bool _initialUriIsHandled = false;
 
+
+
+bool _initialUriIsHandled = false;
+StreamSubscription<String?> ? _incomingUriStream ;
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -49,6 +45,9 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+
+
+
   final AsyncMemoizer _homePageMemoizer = AsyncMemoizer();
   List<LatestProduct> displayedLatestProducts = [];
   String? activeFeaturedCategoryID;
@@ -84,46 +83,31 @@ class HomePageState extends State<HomePage>
     // TODO: implement initState
     super.initState();
     _handleInitialUri();
+    _handleIncomingUri();
     getItemsInCartCount();
   }
 
   @override
   void dispose() {
     _sub?.cancel();
+    _incomingUriStream?.cancel();
     super.dispose();
   }
 
-  /// Handle the initial Uri - the one the app was started with
-  ///
-  /// **ATTENTION**: `getInitialLink`/`getInitialUri` should be handled
-  /// ONLY ONCE in your app's lifetime, since it is not meant to change
-  /// throughout your app's life.
-  ///
-  /// We handle all exceptions, since it is called from initState.
+
+
+
   Future<void> _handleInitialUri() async {
-    // In this example app this is an almost useless guard, but it is here to
-    // show we are not going to call getInitialUri multiple times, even if this
-    // was a weidget that will be disposed of (ex. a navigation route change).
+
     if (!_initialUriIsHandled) {
       _initialUriIsHandled = true;
       try {
-        final uri = await getInitialUri();
+        final uri = await UniLinks.getInitialUri();
         if (uri == null) {
           print('no initial uri');
         } else {
-          print('got initial uri: $uri');
-          Scheduler.SchedulerBinding.instance!.addPostFrameCallback((_) {
-            if (_initialUri != null) {
-              print('uri: ' + uri.toString());
-              List<String> splitted = uri.toString().split('/');
-              if (splitted[splitted.length - 2] == 'products')
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ProductPage(id: splitted[splitted.length - 1])));
-            }
-          });
+          log('got initial uri');
+          goToProductFromUri(uri);
         }
         if (!mounted) return;
         _initialUri = uri;
@@ -137,6 +121,37 @@ class HomePageState extends State<HomePage>
       }
     }
   }
+
+
+  void goToProductFromUri(Uri uri){
+    Scheduler.SchedulerBinding.instance!.addPostFrameCallback((_) {
+        List<String> splitted = uri.toString().split('=');
+
+        log(uri.toString().split('=').toString());
+        navigatorKey.currentState!.push(MaterialPageRoute(
+            builder: (context) =>
+                ProductPage(id: splitted.last)));
+
+
+    });
+
+  }
+  void _handleIncomingUri (){
+
+    if(_initialUriIsHandled){
+      _incomingUriStream = UniLinks.linkStream.listen((uri) {
+
+       goToProductFromUri(Uri.parse(uri!));
+
+      });
+    }
+  }
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
