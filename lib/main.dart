@@ -31,6 +31,7 @@ import 'package:flutter/scheduler.dart' as Scheduler;
 import 'package:uni_links/uni_links.dart' as UniLinks;
 import 'widgets/colored_circular_progress_indicator.dart';
 
+Uri? initialDeepLinkUri = Uri();
 
 bool _initialUriIsHandled = false;
 StreamSubscription<String?> ? _incomingUriStream ;
@@ -63,7 +64,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  Uri? _initialUri = Uri();
 
   Future<Widget?> checkTokenAndUnReadNotifications() async {
     final uri = await UniLinks.getInitialUri();
@@ -100,10 +100,11 @@ class MyAppState extends State<MyApp> {
     _initialUriIsHandled = true;
 
       try {
-        _initialUri = uri;
+        initialDeepLinkUri = uri;
 
         log('got initial uri');
-         return _getWidgetFromUri(uri);
+        String id = _getProductIdFromUri(uri);
+         return ProductPage(id: id);
       } on PlatformException {
         // Platform messages may fail but we ignore the exception
         print('failed to get initial uri');
@@ -113,16 +114,17 @@ class MyAppState extends State<MyApp> {
       }
   }
 
-  Widget _getWidgetFromUri(Uri uri){
+  String _getProductIdFromUri(Uri uri){
     List<String> splitted = uri.toString().split('=');
-    return ProductPage(id: splitted.last);
+    return splitted.last;
   }
   void goToProductFromUri(Uri uri){
     Scheduler.SchedulerBinding.instance!.addPostFrameCallback((_) async {
-      var widget = _getWidgetFromUri(uri);
+      var id  = _getProductIdFromUri(uri);
+
       navigatorKey.currentState!.push(MaterialPageRoute(
           builder: (context) =>
-              widget));
+              ProductPage(id:id)));
 
     });
 
@@ -161,7 +163,7 @@ class MyAppState extends State<MyApp> {
     return MaterialPageRoute(builder: (context) => HomePage());
   }
 
-  checkIfFirstRun() async {
+  Future<bool> checkIfFirstRun() async {
     final prefs = await SharedPreferences.getInstance();
    return redirectToChooseLanguagePage =
         prefs.containsKey(Constants.keyFirstRunOfApp) ? false : true;
@@ -266,8 +268,8 @@ class MyAppState extends State<MyApp> {
 
 
 
-        Widget? widget =
-            redirectToChooseLanguagePage ? FirstRunPage() : snap.data as Widget;
+        Widget? startingWidget =
+            redirectToChooseLanguagePage ? FirstRunPage(productId: initialDeepLinkUri != null ? _getProductIdFromUri(initialDeepLinkUri!) : null,) : snap.data as Widget;
         return OverlaySupport(
           child: MaterialApp(
             onGenerateRoute: getRoute,
@@ -275,7 +277,7 @@ class MyAppState extends State<MyApp> {
             theme: ThemeData(
               fontFamily: 'Tajawal',
             ),
-            home: widget,
+            home: startingWidget,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,

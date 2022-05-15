@@ -96,7 +96,7 @@ class ProductQuantityAndVariantState extends State<ProductQuantityAndVariant> {
     productsIDs.add(widget.id);
     productsQuantities!.add(itemCount.toString());
 
-    productsVariants!.add(selectedVariant!);
+    productsVariants.add(selectedVariant!);
     itemsInCart++;
 
     prefs.setStringList(Constants.keyProductsIDsInCart, productsIDs);

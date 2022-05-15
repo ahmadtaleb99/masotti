@@ -155,7 +155,6 @@ class HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-
     double containerWidth =
         MediaQuery.of(context).size.width - (Constants.doublePadding);
     double spacing = containerWidth / 25;
@@ -165,6 +164,10 @@ class HomePageState extends State<HomePage>
         featuredCategoriesContainerWidth * 100 / 335;
     double featuredCategoryContainerHeight =
         featuredCategoryContainerWidth / 4 * 3;
+
+
+    double noItemscontainerWidths = containerWidth / 100 * 48;
+    double noItemscontainerHeight = (noItemscontainerWidths + (containerWidth / 100 * 5)) * 2 ;
     arabicLanguage =
         Localizations.localeOf(context).languageCode == 'ar' ? true : false;
     return Scaffold(
@@ -416,9 +419,12 @@ class HomePageState extends State<HomePage>
                                             );
                                           })
                                         : [
-                                            RequestEmptyData(
-                                              message: Constants
-                                                  .requestNoDataMessage,
+                                            Container(
+                                              height: noItemscontainerHeight,
+                                              child: RequestEmptyData(
+                                                message: Constants
+                                                    .requestNoDataMessage,
+                                              ),
                                             )
                                           ]),
                               ),

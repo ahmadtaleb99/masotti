@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:masotti/main.dart';
+import 'package:masotti/pages/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import './login.dart';
 
 class FirstRunPage extends StatefulWidget{
+  String?  productId;
+  FirstRunPage({this.productId});
   @override
   State<StatefulWidget> createState() => FirstRunPageState();
 }
 
 class FirstRunPageState extends State<FirstRunPage>{
-
   String selectedLanguage = '';
 
   @override
@@ -220,7 +223,12 @@ class FirstRunPageState extends State<FirstRunPage>{
     }
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(
-      builder: (context) => LoginPage()
+      builder: (context) {
+        if(widget.productId != null)
+          return ProductPage(id: widget.productId);
+        return LoginPage();
+      }
+
     ));
   }
 }
