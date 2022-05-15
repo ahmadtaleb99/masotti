@@ -84,8 +84,8 @@ class ProductQuantityAndVariantState extends State<ProductQuantityAndVariant> {
         prefs.getStringList(Constants.keyProductsIDsInCart);
     List<String>? productsQuantities =
         prefs.getStringList(Constants.keyProductsQuantitiesInCart);
-    List<String?>? productsVariants =
-        prefs.getStringList(Constants.keyProductsVariantsInCart);
+    List<String>? productsVariants =
+        prefs.getStringList(Constants.keyProductsVariantsInCart) ?? [];
     int itemsInCart = prefs.getInt(Constants.keyNumberOfItemsInCart) ?? 0;
 
     if (productsIDs == null) {
@@ -95,7 +95,8 @@ class ProductQuantityAndVariantState extends State<ProductQuantityAndVariant> {
     }
     productsIDs.add(widget.id);
     productsQuantities!.add(itemCount.toString());
-    productsVariants!.add(selectedVariant);
+
+    productsVariants!.add(selectedVariant!);
     itemsInCart++;
 
     prefs.setStringList(Constants.keyProductsIDsInCart, productsIDs);

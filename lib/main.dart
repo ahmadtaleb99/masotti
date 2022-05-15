@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -26,8 +27,13 @@ import './pages/login.dart';
 import './pages/intro_page.dart';
 import './pages/first_run.dart';
 import './constants.dart';
+import 'package:flutter/scheduler.dart' as Scheduler;
+import 'package:uni_links/uni_links.dart' as UniLinks;
 import 'widgets/colored_circular_progress_indicator.dart';
 
+
+bool _initialUriIsHandled = false;
+StreamSubscription<String?> ? _incomingUriStream ;
 
 // Future backgroundMessageHandler(Map<String, dynamic> message) async {
 //   print("onBackgroundMessage: $message");
@@ -37,10 +43,10 @@ import 'widgets/colored_circular_progress_indicator.dart';
 // }
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
-  Firebase.initializeApp();
+ await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
       (_) => runApp(EasyLocalization(
           supportedLocales: [Locale('ar', 'DZ'), Locale('en', 'US')],
@@ -57,6 +63,79 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  Uri? _initialUri = Uri();
+
+  Future<Widget?> checkTokenAndUnReadNotifications() async {
+    final uri = await UniLinks.getInitialUri();
+    if(uri != null){
+    return  _handleInitialUri(uri);
+
+    }
+    _initialUriIsHandled = true;
+
+    final String url = 'check-token-and-un-read-notifications';
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.containsKey(Constants.keyAccessToken)
+        ? prefs.getString(Constants.keyAccessToken)
+        : null;
+
+    if (token != null) {
+      final response = await http.post(Uri.parse(Constants.apiUrl + url) ,
+          body: {'token': token}, headers: {'referer': Constants.apiReferer});
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data['status'] && data['data']) {
+          prefs.setBool(
+              Constants.keyUnreadNotifications, data['un_read_notifications']);
+          return SplashScreen();
+        }
+        prefs.clear();
+      }
+    }
+    return LoginPage();
+  }
+
+  Future<Widget?> _handleInitialUri(Uri uri) async {
+    _initialUriIsHandled = true;
+
+      try {
+        _initialUri = uri;
+
+        log('got initial uri');
+         return _getWidgetFromUri(uri);
+      } on PlatformException {
+        // Platform messages may fail but we ignore the exception
+        print('failed to get initial uri');
+      } on FormatException catch (err) {
+        print('malformed initial uri');
+        // _err = err;
+      }
+  }
+
+  Widget _getWidgetFromUri(Uri uri){
+    List<String> splitted = uri.toString().split('=');
+    return ProductPage(id: splitted.last);
+  }
+  void goToProductFromUri(Uri uri){
+    Scheduler.SchedulerBinding.instance!.addPostFrameCallback((_) async {
+      var widget = _getWidgetFromUri(uri);
+      navigatorKey.currentState!.push(MaterialPageRoute(
+          builder: (context) =>
+              widget));
+
+    });
+
+  }
+  void _handleIncomingUri (){
+
+      _incomingUriStream = UniLinks.linkStream.listen((uri) {
+        if(_initialUriIsHandled)
+          goToProductFromUri(Uri.parse(uri!));
+
+        });
+
+  }
   final FirebaseMessaging fireBaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
@@ -84,7 +163,7 @@ class MyAppState extends State<MyApp> {
 
   checkIfFirstRun() async {
     final prefs = await SharedPreferences.getInstance();
-    redirectToChooseLanguagePage =
+   return redirectToChooseLanguagePage =
         prefs.containsKey(Constants.keyFirstRunOfApp) ? false : true;
   }
 
@@ -101,10 +180,17 @@ class MyAppState extends State<MyApp> {
     }
   }
 
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _incomingUriStream!.cancel();
+  }
   @override
   void initState() {
-    super.initState();
 
+    super.initState();
     checkIfFirstRun();
     subscribeToGeneralNotifications();
 
@@ -157,6 +243,9 @@ class MyAppState extends State<MyApp> {
           notification.title, notification.body, notification.imageUrl);
     });
 
+
+    _handleIncomingUri();
+
   }
 
   @override
@@ -174,6 +263,9 @@ class MyAppState extends State<MyApp> {
             ),
           );
         }
+
+
+
         Widget? widget =
             redirectToChooseLanguagePage ? FirstRunPage() : snap.data as Widget;
         return OverlaySupport(
@@ -195,30 +287,12 @@ class MyAppState extends State<MyApp> {
       },
     );
   }
-
-  Future<Widget> checkTokenAndUnReadNotifications() async {
-    final String url = 'check-token-and-un-read-notifications';
+   Future<bool> _isAuthentecated () async {
     final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.containsKey(Constants.keyAccessToken)
-        ? prefs.getString(Constants.keyAccessToken)
-        : null;
-
-    if (token != null) {
-      final response = await http.post(Uri.parse(Constants.apiUrl + url) ,
-          body: {'token': token}, headers: {'referer': Constants.apiReferer});
-
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        if (data['status'] && data['data']) {
-          prefs.setBool(
-              Constants.keyUnreadNotifications, data['un_read_notifications']);
-          return SplashScreen();
-        }
-        prefs.clear();
-      }
-    }
-    return LoginPage();
+   return prefs.containsKey(Constants.keyAccessToken);
   }
+
+
 
   Future _downloadAndSaveFile(String url, String fileName) async {
     final Directory directory = await getApplicationDocumentsDirectory();

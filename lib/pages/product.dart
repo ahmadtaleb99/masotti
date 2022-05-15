@@ -290,12 +290,9 @@ class ProductPageState extends State<ProductPage> {
             dynamic response = snap.data;
             if (response is String) {
               return SafeArea(
-                child: Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height,
-                  child: Center(
+                child: Center(
+                  child: Container(
+                 height: 200,
                     child: RequestEmptyData(
                       message: response,
                     ),
@@ -1064,10 +1061,13 @@ class ProductPageState extends State<ProductPage> {
       if (data['status']) {
         List? variantsChoices = data['variants'];
         data = data['data'];
+        if(data['status'] =='Inactive')
+          return  "Inactive Product";
         Product product = Product.getProductFromData(data, variantsChoices);
         print(product.nameAr);
         print(product.nameAr);
         tempProduct = product;
+
         _getProductSizeList(product);
         print(product.nameAr.toString());
 

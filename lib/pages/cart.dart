@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -2122,10 +2123,12 @@ class CartPageState extends State<CartPage> {
 
       List? productsData;
       List? offersData;
-
+    print(productsIDs.toString());
+    print(productsVariants.toString());
       if (productsIDs != null) {
         cartHasItems = true;
         productsData = [];
+        log('for');
         for (int i = 0; i < productsIDs.length; i++) {
           productsData.add({
             'id': productsIDs[i],
@@ -2133,7 +2136,10 @@ class CartPageState extends State<CartPage> {
             'variant': productsVariants![i]
           });
         }
+        log('for2');
+
       }
+      log('for3');
 
       if (offersIDs != null) {
         cartHasItems = true;

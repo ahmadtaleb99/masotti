@@ -34,7 +34,7 @@ import 'dart:async';
 
 
 
-bool _initialUriIsHandled = false;
+bool initialUriIsHandled = false;
 StreamSubscription<String?> ? _incomingUriStream ;
 class HomePage extends StatefulWidget {
   @override
@@ -82,8 +82,8 @@ class HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _handleInitialUri();
-    _handleIncomingUri();
+    // _handleInitialUri();
+    // _handleIncomingUri();
     getItemsInCartCount();
   }
 
@@ -99,8 +99,8 @@ class HomePageState extends State<HomePage>
 
   Future<void> _handleInitialUri() async {
 
-    if (!_initialUriIsHandled) {
-      _initialUriIsHandled = true;
+    if (!initialUriIsHandled) {
+      initialUriIsHandled = true;
       try {
         final uri = await UniLinks.getInitialUri();
         if (uri == null) {
@@ -138,7 +138,7 @@ class HomePageState extends State<HomePage>
   }
   void _handleIncomingUri (){
 
-    if(_initialUriIsHandled){
+    if(initialUriIsHandled){
       _incomingUriStream = UniLinks.linkStream.listen((uri) {
 
        goToProductFromUri(Uri.parse(uri!));
@@ -422,7 +422,7 @@ class HomePageState extends State<HomePage>
                                             )
                                           ]),
                               ),
-                              Container(
+                              displayedLatestProducts.length > 0 ?   Container(
                                 width: containerWidth,
                                 padding:
                                     EdgeInsets.only(bottom: Constants.padding),
@@ -521,7 +521,7 @@ class HomePageState extends State<HomePage>
                                     ),
                                   ),
                                 ),
-                              ),
+                              ) : Container(),
                               homePageData.displayAboutBtn!
                                   ? WhoAreWeButton()
                                   : Container()

@@ -15,7 +15,6 @@ class RequestEmptyData extends StatelessWidget {
     double containerHeight = containerWidth / 5;
     return Container(
       color: Constants.whiteColor,
-      height: MediaQuery.of(context).size.height,
       child: Column(
         children: [
           Container(
