@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/utils.dart';
+import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../assets/my_flutter_app_icons.dart';
 import '../pages/splash_screen.dart';
@@ -116,7 +119,7 @@ class LoginPageState extends State<LoginPage> {
                       onSubmit: (_) {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          login(authenticationData);
+                          login(authenticationData,context);
                         }
                       },
                     ),
@@ -165,7 +168,7 @@ class LoginPageState extends State<LoginPage> {
                               : () {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-                                    login(authenticationData);
+                                    login(authenticationData,context);
                                   }
                                 },
                         ),
@@ -294,6 +297,44 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  void showLoadingIndicator({String ? text,required BuildContext  contexts}) {
+showDialog(barrierDismissible :false , context: contexts, builder: (context){
+  return         Center(
+    child: Container(
+      width: 110,
+      child: Material(
+        borderRadius: BorderRadius.circular(10),
+        clipBehavior: Clip.antiAlias,
+        color: Colors.white.withOpacity(0.9),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+               ColoredCircularProgressIndicator(),
+              const SizedBox(
+                height: 10,
+              ),
+              AutoSizeText(
+                text ?? 'Please Wait'.tr() ,
+                style: TextStyle(
+                  color: CupertinoColors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+                maxFontSize: Constants.fontSize,
+                minFontSize: Constants.fontSize - 2,
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+});
+
+  }
 
   resendVerificationSms(phone) async {
     final String url = 'resend-verification-sms';
@@ -302,6 +343,7 @@ class LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
+
       if (data['status']) {
         CustomDialog(
           context: context,
@@ -329,9 +371,10 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> login(var credentials) async {
+  Future<void> login(var credentials, BuildContext loginContext) async {
+    var _loadingDialog = LoadingService.instance;
+    _loadingDialog.show(context, msg : 'Please Wait'.tr());
     setState(() => isLoading = 1);
-
     final String url = 'login-customer';
     final FirebaseMessaging fcm = FirebaseMessaging.instance;
     final tokenResponse = await (fcm.getToken() as Future<String?>);
@@ -344,6 +387,8 @@ class LoginPageState extends State<LoginPage> {
     setState(() => isLoading = 0);
 
     if (response.statusCode == 200) {
+      _loadingDialog.hide();
+
       var data = jsonDecode(response.body);
       if (data['status']) {
         final prefs = await SharedPreferences.getInstance();
@@ -365,23 +410,23 @@ class LoginPageState extends State<LoginPage> {
           okButtonTitle: 'Ok'.tr(),
           cancelButtonTitle: 'Cancel'.tr(),
           onPressedCancelButton: () {
-            Navigator.pop(context);
+            Navigator.pop(loginContext,);
           },
           onPressedOkButton: () {
-            Navigator.pop(context);
+            Navigator.pop(loginContext);
           },
           color: Constants.redColor,
           icon: "assets/images/wrong.svg",
         ).showCustomDialog();
       } else if (data['message'] == 'Account Not Confirmed') {
         CustomDialog(
-          context: context,
+          context: loginContext,
           title: 'Confirmation Account Required'.tr(),
           message: 'You must confirm your account in order to login'.tr(),
           okButtonTitle: 'Verify Account'.tr(),
           cancelButtonTitle: 'Ok'.tr(),
           onPressedCancelButton: () {
-            Navigator.pop(context);
+            Navigator.pop(loginContext);
           },
           onPressedOkButton: () {
             Navigator.push(
