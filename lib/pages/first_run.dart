@@ -224,7 +224,7 @@ class FirstRunPageState extends State<FirstRunPage>{
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(
       builder: (context) {
-        if(widget.productId != null)
+        if(widget.productId != null && widget.productId!.isNotEmpty)
           return ProductPage(id: widget.productId);
         return LoginPage();
       }

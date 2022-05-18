@@ -159,7 +159,10 @@ class AddressWidgetState extends State<AddressWidget> {
                       size: 22,
                       color: Constants.whiteColor,
                     ),
-                    onPressed: () => Navigator.push(
+                    onPressed: () =>
+
+
+                        Navigator.push(
                         context,
                         Platform.isIOS
                             ? MaterialPageRoute(
@@ -167,7 +170,7 @@ class AddressWidgetState extends State<AddressWidget> {
                                     UpdateAddressIOS(id: widget.id))
                             : MaterialPageRoute(
                                 builder: (context) =>
-                                    UpdateAddressIOS(id: widget.id))),
+                                    UpdateAddress(id: widget.id))),
                   ),
                 ),
               ],

@@ -47,6 +47,7 @@ class SettingsPageState extends State<SettingsPage> {
         MediaQuery.of(context).size.width - (Constants.doublePadding);
     arabicLanguage =
         Localizations.localeOf(context).languageCode == 'ar' ? true : false;
+    englishLanguageSelection =   Localizations.localeOf(context).languageCode == 'en' ? true : false;
     return Scaffold(
       backgroundColor: Constants.identityColor,
       appBar: CustomAppBarWidget(
@@ -365,10 +366,13 @@ class SettingsPageState extends State<SettingsPage> {
         if (response.statusCode == 200) {
           var data = jsonDecode(response.body);
           if (data['status']) {
+            print('asdasd');
+            print(data['data']['language']);
             data = data['data'];
             settings = Setting();
             settings!.language = data['language'];
-            englishLanguageSelection = data['language'] == 0 ? true : false;
+            // englishLanguageSelection = data['language'] == 0 ? true : false;
+            //taking the value from the context
             settings!.offerNotifications = data['add_offer_notifications'];
             settings!.categoryNotifications = data['add_category_notifications'];
             settings!.couponNotifications = data['receive_coupon_notifications'];

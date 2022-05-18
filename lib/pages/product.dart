@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import '../widgets/custom_appbar_2.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
@@ -46,6 +48,7 @@ class ProductPageState extends State<ProductPage> {
   bool? accountIsActive = false;
   late Product tempProduct;
   Future? future;
+  String _appBarTitle = 'Product Page';
   int? itemsInCart = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -53,6 +56,8 @@ class ProductPageState extends State<ProductPage> {
   List<String> _sizeColorsList = [];
   List<String> _sizes = [];
   var _existedColor = [];
+  bool _isProductActive = true;
+
   var _isSelectedColors =[];
   List<bool> _existedColorList = [];
   var _isSelectedColorsList =[];
@@ -269,8 +274,14 @@ class ProductPageState extends State<ProductPage> {
         .localeOf(context)
         .languageCode == 'ar' ? true : false;
 
-
     return Scaffold(
+      appBar: !_isProductActive ? CustomAppBarWidget(
+        title: _appBarTitle,
+        currentContext: context,
+        itemsInCart: itemsInCart,
+        cartIconExist: true,
+      ) : null,
+
       key: _scaffoldKey,
       backgroundColor: Constants.whiteColor,
       drawer: SideMenu(),
@@ -290,6 +301,7 @@ class ProductPageState extends State<ProductPage> {
             dynamic response = snap.data;
             if (response is String) {
               return SafeArea(
+
                 child: Center(
                   child: Container(
                  height: 200,
@@ -1062,7 +1074,13 @@ class ProductPageState extends State<ProductPage> {
         List? variantsChoices = data['variants'];
         data = data['data'];
         if(data['status'] =='Inactive')
-          return  "Inactive Product";
+          {
+            _appBarTitle =  arabicLanguage ? data['name_ar'] : data['name_en'];
+            setState(() => _isProductActive =  false );
+
+            return  "Inactive Product";
+
+          }
         Product product = Product.getProductFromData(data, variantsChoices);
         print(product.nameAr);
         print(product.nameAr);

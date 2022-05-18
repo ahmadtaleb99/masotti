@@ -24,10 +24,10 @@ class Address{
     required this.details,
   });
 
-  static Address getAddressFromData(data){
+  static Address getAddressFromData(data,city){
     return Address.fromValues(
       name: data['name'],
-      city: data['city'],
+      city: city,
       district: data['district'],
       street: data['street'],
       floor: data['floor'],
@@ -52,6 +52,6 @@ class Address{
 
   @override
   String toString() {
-    return 'Name: ' + this.name! + ', District: ' + this.district! + ', Street: ' + this.street! + ', City: ' + city!;
+    return 'Address{name: $name, city: $city, district: $district, street: $street, building: $building, home: $home, floor: $floor, details: $details}';
   }
 }
