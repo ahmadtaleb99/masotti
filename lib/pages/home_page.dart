@@ -6,6 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import 'package:masotti/services/DialogService.dart';
+import 'package:masotti/services/networking.dart';
 import '../main.dart';
 import '../pages/sub_categories.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
@@ -189,11 +191,16 @@ class HomePageState extends State<HomePage>
               }
               var response = snap.data;
               if (response is String) {
-                return Container(
-                    margin: EdgeInsets.only(top: Constants.padding),
-                    child: RequestEmptyData(
-                      message: response,
-                    ));
+                return Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(top: Constants.padding),
+                        child: RequestEmptyData(
+                          message: response,
+                        )),
+                 if   (response == Constants.requestErrorMessage ) ElevatedButton(onPressed: (){}, child: Text('retry'))
+                  ],
+                );
               }
               HomePageData homePageData = response as HomePageData;
               return SingleChildScrollView(
@@ -550,79 +557,85 @@ class HomePageState extends State<HomePage>
     return _homePageMemoizer.runOnce(() async {
       final String url = 'get-home-page-data';
       HomePageData homePageData;
-      final response = await http.get(Uri.parse((Constants.apiUrl + url)),
-          headers: {'referer': Constants.apiReferer});
-      log(response.body);
-      if (response.statusCode == 200) {
-        homePageData = HomePageData();
-        var data = jsonDecode(response.body);
-        if (data['status']) {
-          data = data['data'];
-          var homePageSlider = data['homepage_sliders'] as List;
-          homePageData.sliderImages = [];
-          homePageData.sliderProducts = [];
-          for (int i = 0; i < homePageSlider.length; i++) {
-            homePageData.sliderImages!.add(
-              homePageSlider[i]['slide_image'].toString(),
-            );
-            homePageData.sliderProducts!.add(
-              homePageSlider[i]['product_id'] != null
-                  ? homePageSlider[i]['product_id'].toString()
-                  : 'null',
-            );
-          }
-          homePageData.displayAboutBtn = data['show_who_are_we_btn'] != null
-              ? data['show_who_are_we_btn'].toString() == '1'
-                  ? true
-                  : false
-              : false;
-          homePageData.availableOffers =
-              data['available_offers'].toString() == 'true' ? true : false;
-          var featuredCategoriesList = data['latest_categories'] as List;
-          homePageData.latestCategories = [];
-          for (int i = 0; i < featuredCategoriesList.length; i++) {
-            var subCategories =
-                featuredCategoriesList[i]['subCategories'] as List;
-            print(subCategories.length.toString());
-            homePageData.latestCategories!.add(LatestCategory.fromValues(
-              id: featuredCategoriesList[i]['id'].toString(),
-              nameEn: featuredCategoriesList[i]['name_en'],
-              nameAr: featuredCategoriesList[i]['name_ar'],
-              hasSubCategories: subCategories.length > 0 ? true : false,
-            ));
-          }
 
-          activeLatestCategory = homePageData.latestCategories![0];
-          var featuredProductsList = data['latest_products'] as List;
-          homePageData.latestProducts = [];
-          for (int j = 0; j < featuredProductsList.length; j++) {
-            String categoryId =
-                featuredProductsList[j]['category_id'].toString();
-            List products = featuredProductsList[j]['products'] as List;
-            for (int k = 0; k < products.length; k++) {
-              LatestProduct product = LatestProduct.fromValues(
-                  categoryId: categoryId,
-                  id: products[k]['id'],
-                  nameEn: products[k]['name_en'],
-                  nameAr: products[k]['name_ar'],
-                  imagePath: products[k]['images'][0]['path'],
-                  price: double.parse(products[k]['price']),
-                  salesPrice:
-                      products[k]['sales_price'].toString().toLowerCase());
-              homePageData.latestProducts!.add(product);
+        homePageData = HomePageData();
+        try {
+          var data  = await  NetworkingHelper.getData(url);
+          if (data['status']) {
+            data = data['data'];
+            var homePageSlider = data['homepage_sliders'] as List;
+            homePageData.sliderImages = [];
+            homePageData.sliderProducts = [];
+            for (int i = 0; i < homePageSlider.length; i++) {
+              homePageData.sliderImages!.add(
+                homePageSlider[i]['slide_image'].toString(),
+              );
+              homePageData.sliderProducts!.add(
+                homePageSlider[i]['product_id'] != null
+                    ? homePageSlider[i]['product_id'].toString()
+                    : 'null',
+              );
+            }
+            homePageData.displayAboutBtn = data['show_who_are_we_btn'] != null
+                ? data['show_who_are_we_btn'].toString() == '1'
+                ? true
+                : false
+                : false;
+            homePageData.availableOffers =
+            data['available_offers'].toString() == 'true' ? true : false;
+            var featuredCategoriesList = data['latest_categories'] as List;
+            homePageData.latestCategories = [];
+            for (int i = 0; i < featuredCategoriesList.length; i++) {
+              var subCategories =
+              featuredCategoriesList[i]['subCategories'] as List;
+              print(subCategories.length.toString());
+              homePageData.latestCategories!.add(LatestCategory.fromValues(
+                id: featuredCategoriesList[i]['id'].toString(),
+                nameEn: featuredCategoriesList[i]['name_en'],
+                nameAr: featuredCategoriesList[i]['name_ar'],
+                hasSubCategories: subCategories.length > 0 ? true : false,
+              ));
+            }
+
+            activeLatestCategory = homePageData.latestCategories![0];
+            var featuredProductsList = data['latest_products'] as List;
+            homePageData.latestProducts = [];
+            for (int j = 0; j < featuredProductsList.length; j++) {
+              String categoryId =
+              featuredProductsList[j]['category_id'].toString();
+              List products = featuredProductsList[j]['products'] as List;
+              for (int k = 0; k < products.length; k++) {
+                LatestProduct product = LatestProduct.fromValues(
+                    categoryId: categoryId,
+                    id: products[k]['id'],
+                    nameEn: products[k]['name_en'],
+                    nameAr: products[k]['name_ar'],
+                    imagePath: products[k]['images'][0]['path'],
+                    price: double.parse(products[k]['price']),
+                    salesPrice:
+                    products[k]['sales_price'].toString().toLowerCase());
+                homePageData.latestProducts!.add(product);
+                if (j == 0) {
+                  displayedLatestProducts.add(product);
+                }
+              }
               if (j == 0) {
-                displayedLatestProducts.add(product);
+                activeFeaturedCategoryID = categoryId;
               }
             }
-            if (j == 0) {
-              activeFeaturedCategoryID = categoryId;
-            }
+            return homePageData;
           }
-          return homePageData;
+
+          return Constants.requestNoDataMessage;
+
+           Constants.requestErrorMessage;   }
+          on TimeoutException {
+          return  Constants.requestErrorMessage;
+        } catch (e) {
+          print('socket');
+          return showInternetErrorDialog(context);
         }
-        return Constants.requestNoDataMessage;
-      }
-      return Constants.requestErrorMessage;
+
     });
   }
 
