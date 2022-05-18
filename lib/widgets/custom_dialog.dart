@@ -90,62 +90,93 @@ class CustomDialog {
                   ),
                 ),
               ),
-              actions: <Widget>[Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 40),
-                      child: ButtonTheme(
-                        minWidth: containerWidth / 3,
-                        height: 40,
-                        child: RaisedButton(
-                          child: Text(cancelButtonTitle!,
-                              style: TextStyle(
-                                  color: Constants.identityColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Constants.fontSize - 2)),
-                          onPressed: onPressedCancelButton as void Function()?,
-                          color: Constants.whiteColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(Constants.borderRadius),
-                          ),
-                          elevation: 5,
-                        ),
-                      ),
-                    ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: onPressedCancelButton == null
+                        ? [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 40),
+                                child: ButtonTheme(
+                                  minWidth: containerWidth / 3,
+                                  height: 40,
+                                  child: RaisedButton(
+                                    child: Text(okButtonTitle!,
+                                        style: TextStyle(
+                                            color: Constants.whiteColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Constants.fontSize - 2)),
+                                    onPressed: onPressedOkButton as void
+                                        Function()?,
+                                    color: color,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.borderRadius),
+                                    ),
+                                    elevation: 5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]
+                        : [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 40),
+                                child: ButtonTheme(
+                                  minWidth: containerWidth / 3,
+                                  height: 40,
+                                  child: RaisedButton(
+                                    child: Text(cancelButtonTitle!,
+                                        style: TextStyle(
+                                            color: Constants.identityColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Constants.fontSize - 2)),
+                                    onPressed: onPressedCancelButton as void
+                                        Function()?,
+                                    color: Constants.whiteColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.borderRadius),
+                                    ),
+                                    elevation: 5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 40),
+                                child: ButtonTheme(
+                                  minWidth: containerWidth / 3,
+                                  height: 40,
+                                  child: RaisedButton(
+                                    child: Text(okButtonTitle!,
+                                        style: TextStyle(
+                                            color: Constants.whiteColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Constants.fontSize - 2)),
+                                    onPressed:
+                                        onPressedOkButton as void Function()?,
+                                    color: color,
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.borderRadius),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                   ),
-                  SizedBox(width: 10,),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 40),
-                      child: ButtonTheme(
-                        minWidth: containerWidth / 3,
-                        height: 40,
-                        child: RaisedButton(
-                          child: Text(okButtonTitle!,
-                              style: TextStyle(
-                                  color: Constants.whiteColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Constants.fontSize - 2)),
-                          onPressed: onPressedOkButton as void Function()?,
-                          color: color,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(Constants.borderRadius),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],),
-              )
-
-
+                )
               ],
-
             ),
           );
         });

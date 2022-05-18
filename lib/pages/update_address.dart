@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -325,6 +327,7 @@ class UpdateAddressState extends State<UpdateAddress> {
           headers: {'referer': Constants.apiReferer});
 
       if (response.statusCode == 200) {
+        log(response.body);
         var data = jsonDecode(response.body);
         if (data['status']) {
           String? cityName = data['city_name'];

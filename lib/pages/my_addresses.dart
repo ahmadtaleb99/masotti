@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -102,13 +103,20 @@ class MyAddressesPageState extends State<MyAddressesPage> {
                               child: IconButton(
                                 icon: Icon(Icons.add),
                                 color: Constants.whiteColor,
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    Platform.isIOS
-                                        ? MaterialPageRoute(
-                                            builder: (context) => AddAddressIOS())
-                                        : MaterialPageRoute(
-                                            builder: (context) => AddAddress())),
+                                onPressed: () {
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddAddressIOS()));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     Platform.isIOS
+                                  //         ? MaterialPageRoute(
+                                  //         builder: (context) => AddAddressIOS())
+                                  //         : MaterialPageRoute(
+                                  //         builder: (context) => AddAddress()));
+                                }
                               ),
                             )
                           ],
@@ -146,11 +154,22 @@ class MyAddressesPageState extends State<MyAddressesPage> {
                                     child: IconButton(
                                       icon: Icon(Icons.add),
                                       color: Constants.whiteColor,
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddAddressIOS())),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => AddAddressIOS()));
+                                        // Platform.isIOS ? Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             AddAddressIOS()))  :
+                                        // Navigator.push(
+                                        // context,
+                                        // MaterialPageRoute(
+                                        // builder: (context) =>
+                                        // AddAddress()));
+                                      }
                                     ),
                                   )
                                 ],

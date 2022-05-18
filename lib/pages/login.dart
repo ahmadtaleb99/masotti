@@ -352,10 +352,6 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
               'A new verification message has been sent. Please check it'.tr(),
           okButtonTitle: 'Verify Account'.tr(),
           cancelButtonTitle: 'Ok'.tr(),
-          onPressedCancelButton: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
           onPressedOkButton: () {
             Navigator.push(
                 context,
@@ -408,10 +404,7 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
           title: 'Wrong Credentials'.tr(),
           message: 'You have entered wrong mobile phone or password!'.tr(),
           okButtonTitle: 'Ok'.tr(),
-          cancelButtonTitle: 'Cancel'.tr(),
-          onPressedCancelButton: () {
-            Navigator.pop(loginContext,);
-          },
+
           onPressedOkButton: () {
             Navigator.pop(loginContext);
           },
