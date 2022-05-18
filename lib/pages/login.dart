@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/services/DialogService.dart';
+import 'package:masotti/services/networking.dart';
 import 'package:masotti/utils.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
@@ -18,6 +20,7 @@ import 'forgot_password.dart';
 import '../widgets/alert_dialog.dart';
 import '../pages/signup.dart';
 import '../constants.dart';
+import 'package:masotti/main.dart';
 import '../widgets/text_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -338,11 +341,9 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
 
   resendVerificationSms(phone) async {
     final String url = 'resend-verification-sms';
-    final response = await http.post(Uri.parse(Constants.apiUrl + url),
-        body: {'phone': phone}, headers: {'referer': Constants.apiReferer});
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+    final data =await  NetworkingHelper.postData(url: url, body: {'phone': phone});
+
 
       if (data['status']) {
         CustomDialog(
@@ -364,12 +365,13 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
           icon: "assets/images/warning.svg",
         ).showCustomDialog();
       }
-    }
   }
 
   Future<void> login(var credentials, BuildContext loginContext) async {
     var _loadingDialog = LoadingService.instance;
     _loadingDialog.show(context, msg : 'Please Wait'.tr());
+    try{
+
     setState(() => isLoading = 1);
     final String url = 'login-customer';
     final FirebaseMessaging fcm = FirebaseMessaging.instance;
@@ -377,62 +379,66 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
     credentials['device_token'] =
         tokenResponse != null ? tokenResponse :null;
 
-    final response = await http.post(Uri.parse(Constants.apiUrl + url),
-        body: credentials, headers: {'referer': Constants.apiReferer});
-    print(response.body);
     setState(() => isLoading = 0);
 
-    if (response.statusCode == 200) {
-      _loadingDialog.hide();
 
-      var data = jsonDecode(response.body);
-      if (data['status']) {
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString(Constants.keyAccessToken, data['token']);
-        prefs.setBool(Constants.keyAccountStatus,
-            data['account_status'] == 'Active' ? true : false);
-        if (redirectToCartPage == true) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => SplashScreen()),
-              (Route<dynamic> route) => false);
+
+
+        final data =await  NetworkingHelper.postData(url: url, body: credentials);
+        if (data['status']) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString(Constants.keyAccessToken, data['token']);
+          prefs.setBool(Constants.keyAccountStatus,
+              data['account_status'] == 'Active' ? true : false);
+          if (redirectToCartPage == true) {
+            Navigator.pop(context);
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => SplashScreen()),
+                    (Route<dynamic> route) => false);
+          }
+        } else if (data['message'] == 'Wrong Credentials') {
+          CustomDialog(
+            context: context,
+            title: 'Wrong Credentials'.tr(),
+            message: 'You have entered wrong mobile phone or password!'.tr(),
+            okButtonTitle: 'Ok'.tr(),
+
+            onPressedOkButton: () {
+              Navigator.pop(loginContext);
+            },
+            color: Constants.redColor,
+            icon: "assets/images/wrong.svg",
+          ).showCustomDialog();
+        } else if (data['message'] == 'Account Not Confirmed') {
+          CustomDialog(
+            context: loginContext,
+            title: 'Confirmation Account Required'.tr(),
+            message: 'You must confirm your account in order to login'.tr(),
+            okButtonTitle: 'Verify Account'.tr(),
+            cancelButtonTitle: 'Ok'.tr(),
+            onPressedCancelButton: () {
+              Navigator.pop(loginContext);
+            },
+            onPressedOkButton: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VerifyAccountPage(
+                        phoneNumber: credentials['phone'],
+                      )));
+            },
+            color: Color(0xFFFFB300),
+            icon: "assets/images/warning.svg",
+          ).showCustomDialog();
         }
-      } else if (data['message'] == 'Wrong Credentials') {
-        CustomDialog(
-          context: context,
-          title: 'Wrong Credentials'.tr(),
-          message: 'You have entered wrong mobile phone or password!'.tr(),
-          okButtonTitle: 'Ok'.tr(),
-
-          onPressedOkButton: () {
-            Navigator.pop(loginContext);
-          },
-          color: Constants.redColor,
-          icon: "assets/images/wrong.svg",
-        ).showCustomDialog();
-      } else if (data['message'] == 'Account Not Confirmed') {
-        CustomDialog(
-          context: loginContext,
-          title: 'Confirmation Account Required'.tr(),
-          message: 'You must confirm your account in order to login'.tr(),
-          okButtonTitle: 'Verify Account'.tr(),
-          cancelButtonTitle: 'Ok'.tr(),
-          onPressedCancelButton: () {
-            Navigator.pop(loginContext);
-          },
-          onPressedOkButton: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => VerifyAccountPage(
-                          phoneNumber: credentials['phone'],
-                        )));
-          },
-          color: Color(0xFFFFB300),
-          icon: "assets/images/warning.svg",
-        ).showCustomDialog();
+      } on TimeoutException {
+        showInternetErrorDialog(context);
+      } catch (e) {
+        print('socket');
+        showInternetErrorDialog(context);
       }
-    }
+    _loadingDialog.hide();
+
   }
 }
