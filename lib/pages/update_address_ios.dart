@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/models/city.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,7 +116,7 @@ class UpdateAddressIOSState extends State<UpdateAddressIOS> {
                                   iconSize: 60,
                                   onSaved: (value) => address.name = value,
                                   isRequired: true,
-                                  initialValue: addressResponse.name,
+                                  initialValue: addressResponse.name
                                 ),
                                 SizedBox(height: 15),
                                 CustomTextField(
@@ -259,26 +262,26 @@ class UpdateAddressIOSState extends State<UpdateAddressIOS> {
 
       final response = await http.get(Uri.parse(Constants.apiUrl + url),
           headers: {'referer': Constants.apiReferer});
+      print('here1');
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['status']) {
-          // String cityName = data['city_name'];
-
-          // cities = List<City>();
-          // for(int i = 0; i < data['cities'].length; i++){
-          //   cities.add(City(
-          //       id: int.parse(data['cities'][i]['id'].toString()),
-          //       name: data['cities'][i]['name']
-          //   ));
-          // }
-
           data = data['data'];
+
+          log(response.body);
+          String cityName = data['city_name'];
+          print('here2');
+          print('here3');
+
+
+
+          Address addressResult = Address.getAddressFromData(data, cityName);
+
           // City city = City(
           //     id: int.parse(data['city_id'].toString()),
           //     name: cityName
           // );
-          Address addressResult = Address.getAddressFromData(data);
           // selectedCity = cities.firstWhere((city) => city.id == addressResult.city.id && city.name == addressResult.city.name);
           return addressResult;
         }
@@ -295,6 +298,7 @@ class UpdateAddressIOSState extends State<UpdateAddressIOS> {
     print('add_address: ' + address.toJson().toString());
     final response = await http.post(Uri.parse(Constants.apiUrl + url),
         body: address.toJson(), headers: {'referer': Constants.apiReferer});
+    log(response.body);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);

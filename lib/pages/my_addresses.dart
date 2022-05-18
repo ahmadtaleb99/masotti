@@ -107,15 +107,12 @@ class MyAddressesPageState extends State<MyAddressesPage> {
 
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AddAddressIOS()));
-                                  // Navigator.push(
-                                  //     context,
-                                  //     Platform.isIOS
-                                  //         ? MaterialPageRoute(
-                                  //         builder: (context) => AddAddressIOS())
-                                  //         : MaterialPageRoute(
-                                  //         builder: (context) => AddAddress()));
+
+                                      Platform.isIOS
+                                          ? MaterialPageRoute(
+                                          builder: (context) => AddAddressIOS())
+                                          : MaterialPageRoute(
+                                          builder: (context) => AddAddress()));
                                 }
                               ),
                             )
@@ -155,20 +152,18 @@ class MyAddressesPageState extends State<MyAddressesPage> {
                                       icon: Icon(Icons.add),
                                       color: Constants.whiteColor,
                                       onPressed: () {
-                                        Navigator.push(
+
+
+                                        Platform.isIOS ? Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => AddAddressIOS()));
-                                        // Platform.isIOS ? Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             AddAddressIOS()))  :
-                                        // Navigator.push(
-                                        // context,
-                                        // MaterialPageRoute(
-                                        // builder: (context) =>
-                                        // AddAddress()));
+                                                builder: (context) =>
+                                                    AddAddressIOS()))  :
+                                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                        builder: (context) =>
+                                        AddAddress()));
                                       }
                                     ),
                                   )

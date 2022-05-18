@@ -161,19 +161,17 @@ class AddressWidgetState extends State<AddressWidget> {
                     ),
                     onPressed: () =>
 
+
+
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UpdateAddressIOS(id: widget.id)))
-                        //Navigator.push(
-                        // context,
-                        // Platform.isIOS
-                        //     ? MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             UpdateAddressIOS(id: widget.id))
-                        //     : MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             UpdateAddress(id: widget.id))),
+                        context,
+                        Platform.isIOS
+                            ? MaterialPageRoute(
+                                builder: (context) =>
+                                    UpdateAddressIOS(id: widget.id))
+                            : MaterialPageRoute(
+                                builder: (context) =>
+                                    UpdateAddress(id: widget.id))),
                   ),
                 ),
               ],

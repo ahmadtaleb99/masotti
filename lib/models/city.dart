@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class City{
-  int id;
+  int ?  id;
   String? name;
 
   City({
