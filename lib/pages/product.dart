@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:masotti/services/networking.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
 import '../widgets/custom_appbar_2.dart';
 
@@ -281,7 +281,7 @@ class ProductPageState extends State<ProductPage> {
         title: _appBarTitle,
         currentContext: context,
         itemsInCart: itemsInCart,
-        cartIconExist: true,
+        cartIconExist: false,
       ) : null,
 
       key: _scaffoldKey,

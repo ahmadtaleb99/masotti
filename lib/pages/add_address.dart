@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:async/async.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:masotti/services/DialogService.dart';
-import 'package:masotti/services/networking.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/utils.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
@@ -303,7 +305,9 @@ class AddAddressState extends State<AddAddress> {
                                     onPressed: isLoading == 1
                                         ? null
                                         : () {
-                                            if (_formKey.currentState!
+                                      FocusScope.of(context).unfocus();
+
+                                      if (_formKey.currentState!
                                                     .validate() &&
                                                 selectedCity != null) {
                                               _formKey.currentState!.save();
@@ -338,11 +342,13 @@ class AddAddressState extends State<AddAddress> {
   addAddress() async {
     LoadingService.instance.show(context);
     setState(() => isLoading = 1);
-      try {final String url = 'add-address';
+      try {
+        final String url = 'add-address';
       final prefs = await SharedPreferences.getInstance();
       String? accessToken = prefs.getString(Constants.keyAccessToken);
 
       if (accessToken != null) {
+        log('access token : $accessToken');
         final data = await NetworkingHelper.postData(  url ,body: address.toJson(),
             headers: {
               'Authorization': 'Bearer ' + accessToken,
@@ -403,8 +409,11 @@ class AddAddressState extends State<AddAddress> {
         }
       }
 
-      setState(() => isLoading = 0);}
-      catch (e){
+      setState(() => isLoading = 0);
+
+      }
+      catch (e,stack){
+
         showInternetErrorDialog(context);
       }
 

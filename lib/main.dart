@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart' as http;
-import 'package:masotti/services/networking.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
 import 'package:masotti/widgets/request_empty_data.dart';
 import './models/pushNotificationModel.dart';

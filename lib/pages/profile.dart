@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:async/async.dart';
@@ -385,6 +387,8 @@ class ProfilePageState extends State<ProfilePage> {
       String? accessToken = prefs.getString(Constants.keyAccessToken);
 
       if (accessToken != null) {
+        log('access token : $accessToken');
+
         final response = await http.get(Uri.parse(Constants.apiUrl + url), headers: {
           'Authorization': 'Bearer ' + accessToken,
           'referer': Constants.apiReferer

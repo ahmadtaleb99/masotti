@@ -298,7 +298,9 @@ class UpdateAddressState extends State<UpdateAddress> {
                                       onPressed: isLoading == 1
                                           ? null
                                           : () {
-                                              if (_formKey.currentState!
+                                        FocusScope.of(context).unfocus();
+
+                                        if (_formKey.currentState!
                                                   .validate()) {
                                                 _formKey.currentState!.save();
                                                 updateAddress(id);

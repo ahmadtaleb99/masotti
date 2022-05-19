@@ -208,7 +208,9 @@ class AddAddressIOSState extends State<AddAddressIOS> {
                                 onPressed: isLoading == 1
                                     ? null
                                     : () {
-                                        if (_formKey.currentState!.validate()) {
+                                  FocusScope.of(context).unfocus();
+
+                                  if (_formKey.currentState!.validate()) {
                                           _formKey.currentState!.save();
                                           addAddress();
                                         } else {

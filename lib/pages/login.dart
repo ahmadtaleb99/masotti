@@ -7,7 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:masotti/services/DialogService.dart';
 import 'package:masotti/services/DialogService.dart';
-import 'package:masotti/services/networking.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import '../services/DialogService.dart';
 import 'package:masotti/utils.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
@@ -171,7 +171,8 @@ class LoginPageState extends State<LoginPage> {
                           onPressed: isLoading == 1
                               ? null
                               : () {
-                                  if (_formKey.currentState!.validate()) {
+                            FocusScope.of(context).unfocus();
+                            if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
                                     login(authenticationData,context);
                                   }

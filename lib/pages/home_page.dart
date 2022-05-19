@@ -8,8 +8,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:masotti/services/DialogService.dart';
-import 'package:masotti/services/networking.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
+import 'package:masotti/widgets/error_widget.dart';
 import '../main.dart';
 import '../pages/sub_categories.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
@@ -190,6 +191,39 @@ class HomePageState extends State<HomePage>
           child: FutureBuilder(
             future: _getHomePageElements(),
             builder: (context, snap) {
+              if(snap.hasError){
+                return Column(
+
+                  children: [
+
+                    Align(
+                      alignment: arabicLanguage ? Alignment.topRight : Alignment.topLeft,
+                      child: Container(
+                          width: 60,
+                          height: 40,
+                          margin: EdgeInsets.only(top: 40),
+                          decoration: BoxDecoration(
+                              borderRadius: borderRadius, color: Constants.identityColor.withOpacity(0.1  )),
+                          child: IconButton(
+                              icon: SvgPicture.asset(
+                                Constants.sideMenuImage,
+                              ),
+                              color: Constants.identityColor,
+                              onPressed: () => Scaffold.of(context).openDrawer()
+                          )),
+                    ),
+                    SizedBox(height: 200,),
+                    CustomErrorWidget(errorText: snap.error.toString(),onRetry : (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomePage()));
+                    })
+
+                  ],
+                );
+
+              }
               if (!snap.hasData) {
                 return Container(
                     height: MediaQuery.of(context).size.height,
@@ -219,19 +253,9 @@ class HomePageState extends State<HomePage>
                               onPressed: () => Scaffold.of(context).openDrawer()
                           )),
                     ),
-                  SizedBox(height: 200,),
-                    Container(
-                        margin: EdgeInsets.only(top: Constants.padding),
-                        child: RequestEmptyData(
-                          message: response,
-                        )),
-                    CustomRedButton(text: 'Retry', onPressed: (){
-              Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => HomePage()));
-              }
-                    )   ],
+
+                    RequestEmptyData(message: response)
+                  ],
                 );
               }
               HomePageData homePageData = response as HomePageData;
@@ -662,7 +686,7 @@ class HomePageState extends State<HomePage>
 
          }
         catch (e) {
-          return  Constants.requestErrorMessage;
+          rethrow  ;
         }
 
     });
