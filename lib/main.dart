@@ -5,6 +5,9 @@ import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/services/networking.dart';
+import 'package:masotti/widgets/custom_red_button.dart';
+import 'package:masotti/widgets/request_empty_data.dart';
 import './models/pushNotificationModel.dart';
 import './pages/product.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,36 +68,39 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
 
-  Future<Widget?> checkTokenAndUnReadNotifications() async {
-    final uri = await UniLinks.getInitialUri();
-    if(uri != null){
-    return  _handleInitialUri(uri);
-
-    }
-    _initialUriIsHandled = true;
-
-    final String url = 'check-token-and-un-read-notifications';
-    final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.containsKey(Constants.keyAccessToken)
-        ? prefs.getString(Constants.keyAccessToken)
-        : null;
-
-    if (token != null) {
-      final response = await http.post(Uri.parse(Constants.apiUrl + url) ,
-          body: {'token': token}, headers: {'referer': Constants.apiReferer});
-
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        if (data['status'] && data['data']) {
-          prefs.setBool(
-              Constants.keyUnreadNotifications, data['un_read_notifications']);
-          return SplashScreen();
-        }
-        prefs.clear();
+  Future checkTokenAndUnReadNotifications() async {
+    try {
+      final uri = await UniLinks.getInitialUri();
+      if (uri != null) {
+        return _handleInitialUri(uri);
       }
+      _initialUriIsHandled = true;
+
+      final String url = 'check-token-and-un-read-notifications';
+      final prefs = await SharedPreferences.getInstance();
+      String? token = prefs.containsKey(Constants.keyAccessToken)
+          ? prefs.getString(Constants.keyAccessToken)
+          : null;
+
+      if (token != null) {
+        final data = await NetworkingHelper.postData(url, body: {'token': token}, headers: {'referer': Constants.apiReferer}, );
+
+          if (data['status'] && data['data']) {
+            prefs.setBool(
+                Constants.keyUnreadNotifications,
+                data['un_read_notifications']);
+            return SplashScreen();
+          }
+          prefs.clear();
+      }
+      return LoginPage();
     }
-    return LoginPage();
+    catch (e) {
+      return Constants.requestErrorMessage;
+    }
   }
+
+
 
   Future<Widget?> _handleInitialUri(Uri uri) async {
     _initialUriIsHandled = true;
@@ -265,10 +271,31 @@ class MyAppState extends State<MyApp> {
             ),
           );
         }
+        var response = snap.data;
+        Widget? startingWidget;
+        if (response is String) {
+          startingWidget=  Scaffold(
+             body: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(top: Constants.padding),
+                        child: RequestEmptyData(
+                          message: response,
+                        )),
+                    CustomRedButton(text: 'Retry', onPressed: (){
+
+                      setState(() {
+                        checkTokenAndUnReadNotifications();
+                      });
+                    ;}
+                    )]
+             ),
+           );
+        }
 
 
-
-        Widget? startingWidget =
+     else   startingWidget =
             redirectToChooseLanguagePage ? FirstRunPage(productId: initialDeepLinkUri != null ? _getProductIdFromUri(initialDeepLinkUri!) : null,) : snap.data as Widget;
         return OverlaySupport(
           child: MaterialApp(

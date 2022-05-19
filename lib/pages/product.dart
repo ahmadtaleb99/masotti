@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:masotti/services/networking.dart';
+import 'package:masotti/widgets/custom_red_button.dart';
 import '../widgets/custom_appbar_2.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -48,7 +50,7 @@ class ProductPageState extends State<ProductPage> {
   bool? accountIsActive = false;
   late Product tempProduct;
   Future? future;
-  String _appBarTitle = 'Product Page';
+  String _appBarTitle = 'Product Page'.tr();
   int? itemsInCart = 0;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -56,7 +58,7 @@ class ProductPageState extends State<ProductPage> {
   List<String> _sizeColorsList = [];
   List<String> _sizes = [];
   var _existedColor = [];
-  bool _isProductActive = true;
+  bool _isSuccess = true;
 
   var _isSelectedColors =[];
   List<bool> _existedColorList = [];
@@ -275,7 +277,7 @@ class ProductPageState extends State<ProductPage> {
         .languageCode == 'ar' ? true : false;
 
     return Scaffold(
-      appBar: !_isProductActive ? CustomAppBarWidget(
+      appBar: !_isSuccess ? CustomAppBarWidget(
         title: _appBarTitle,
         currentContext: context,
         itemsInCart: itemsInCart,
@@ -302,13 +304,26 @@ class ProductPageState extends State<ProductPage> {
             if (response is String) {
               return SafeArea(
 
-                child: Center(
-                  child: Container(
-                 height: 200,
-                    child: RequestEmptyData(
-                      message: response,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: RequestEmptyData(
+                        message: response,
+                      ),
                     ),
-                  ),
+                 if(response == Constants.requestErrorMessage)   CustomRedButton(text: 'Retry', onPressed: (){
+                   setState(() {
+                     Navigator.pushReplacement(
+                         context,
+                         MaterialPageRoute(
+                             builder: (context) => ProductPage(id: id)));
+                   });
+
+                    }
+                    )
+                  ],
                 ),
               );
             }
@@ -906,29 +921,11 @@ class ProductPageState extends State<ProductPage> {
                                             ButtonTheme(
                                               minWidth: containerWidth / 2,
                                               height: 50,
-                                              child: RaisedButton(
-                                                color: Constants.redColor,
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        Constants
-                                                            .borderRadius)),
-                                                child: AutoSizeText(
-                                                  'Add To Cart'.tr(),
-                                                  style: TextStyle(
-                                                      color: Constants
-                                                          .whiteColor,
-                                                      fontWeight:
-                                                      FontWeight.bold),
-                                                  minFontSize:
-                                                  Constants.fontSize - 2,
-                                                  maxFontSize: Constants
-                                                      .fontSize,
-                                                ),
+                                              child: CustomRedButton(
+                                                text: 'Add To Cart' ,
                                                 onPressed: () =>
                                                     addToCartBottomSheet(
-                                                        context),
+                                                        context)
                                               ),
                                             ),
                                             SizedBox(width: 5),
@@ -1063,24 +1060,21 @@ class ProductPageState extends State<ProductPage> {
   Future getProduct(productId) async {
     // AsyncMemoizer memoizer = AsyncMemoizer();
     // return memoizer.runOnce(() async {
-    final String url = 'get-product?product_id=$productId';
-    final response = await http.get(Uri.parse(Constants.apiUrl + url) ,
-        headers: {'referer': Constants.apiReferer});
+    try{
+      final String url = 'get-product?product_id=$productId';
+      var data = await NetworkingHelper.getData(url) ;
 
-    if (response.statusCode == 200) {
-      print(response.body.toString() + 'asdasdasdasd');
-      var data = jsonDecode(response.body);
+
       if (data['status']) {
         List? variantsChoices = data['variants'];
         data = data['data'];
         if(data['status'] =='Inactive')
-          {
-            _appBarTitle =  arabicLanguage ? data['name_ar'] : data['name_en'];
-            setState(() => _isProductActive =  false );
+        {
+          _appBarTitle =  arabicLanguage ? data['name_ar'] : data['name_en'];
+          setState(() => _isSuccess =  false );
+          return  "Inactive Product";
 
-            return  "Inactive Product";
-
-          }
+        }
         Product product = Product.getProductFromData(data, variantsChoices);
         print(product.nameAr);
         print(product.nameAr);
@@ -1094,7 +1088,12 @@ class ProductPageState extends State<ProductPage> {
 
       return data['message'].toString();
     }
-    return Constants.requestErrorMessage;
+    catch (e){
+      setState(() => _isSuccess =  false );
+      return Constants.requestErrorMessage;
+
+    }
+
     // });
   }
 }

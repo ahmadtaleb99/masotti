@@ -9,10 +9,10 @@ class NetworkingHelper{
 
 
 
-  static Future<dynamic>  getData (String url) async {
+  static Future<dynamic>  getData (String url,{Map<String, String>? headers}) async {
 
     try{
-        http.Response response  = await http.get(Uri.parse(url));
+        http.Response response  = await http.get(Uri.parse(Constants.apiUrl + url),headers: headers ??  {'referer': Constants.apiReferer} );
         var data = jsonDecode(response.body);
 
         if(response.statusCode == 200){
@@ -29,7 +29,8 @@ class NetworkingHelper{
 
 
   static  Future<dynamic>  postData (
-      {required String url,
+  String url,
+      { required ,
     Map<String, String>? headers,
         required Object? body}) async {
 

@@ -7,7 +7,7 @@ class Constants{
   static final String apiFilesUrl             = 'http://flexsolutions.biz/apps/masotti/';
 
   static final String apiReferer              = 'http://flexsolution.biz';
-  static final String requestErrorMessage     = 'Error ocurred while getting data';
+  static final String requestErrorMessage     = 'Error Occurred while getting data';
   static final String requestNoDataMessage    = 'No results found';
   static final Color? borderColor              = Colors.grey[200];
   static final Color whiteColor               = Colors.white;

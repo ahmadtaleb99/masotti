@@ -4,10 +4,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 import 'package:masotti/services/DialogService.dart';
 import 'package:masotti/services/networking.dart';
+import 'package:masotti/widgets/custom_red_button.dart';
 import '../main.dart';
 import '../pages/sub_categories.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
@@ -170,8 +172,14 @@ class HomePageState extends State<HomePage>
 
     double noItemscontainerWidths = containerWidth / 100 * 48;
     double noItemscontainerHeight = (noItemscontainerWidths + (containerWidth / 100 * 5)) * 2 ;
+
+    Radius radius = Radius.circular(Constants.borderRadius);
+
     arabicLanguage =
         Localizations.localeOf(context).languageCode == 'ar' ? true : false;
+    BorderRadius borderRadius = arabicLanguage
+    ? BorderRadius.only(bottomLeft: radius, topLeft: radius)
+        : BorderRadius.only(bottomRight: radius, topRight: radius);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Constants.whiteColor,
@@ -192,14 +200,38 @@ class HomePageState extends State<HomePage>
               var response = snap.data;
               if (response is String) {
                 return Column(
+
                   children: [
+
+                    Align(
+                      alignment: arabicLanguage ? Alignment.topRight : Alignment.topLeft,
+                      child: Container(
+                          width: 60,
+                          height: 40,
+                          margin: EdgeInsets.only(top: 40),
+                          decoration: BoxDecoration(
+                              borderRadius: borderRadius, color: Constants.identityColor.withOpacity(0.1  )),
+                          child: IconButton(
+                              icon: SvgPicture.asset(
+                                Constants.sideMenuImage,
+                              ),
+                              color: Constants.identityColor,
+                              onPressed: () => Scaffold.of(context).openDrawer()
+                          )),
+                    ),
+                  SizedBox(height: 200,),
                     Container(
                         margin: EdgeInsets.only(top: Constants.padding),
                         child: RequestEmptyData(
                           message: response,
                         )),
-                 if   (response == Constants.requestErrorMessage ) ElevatedButton(onPressed: (){}, child: Text('retry'))
-                  ],
+                    CustomRedButton(text: 'Retry', onPressed: (){
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) => HomePage()));
+              }
+                    )   ],
                 );
               }
               HomePageData homePageData = response as HomePageData;
@@ -628,12 +660,9 @@ class HomePageState extends State<HomePage>
 
           return Constants.requestNoDataMessage;
 
-           Constants.requestErrorMessage;   }
-          on TimeoutException {
+         }
+        catch (e) {
           return  Constants.requestErrorMessage;
-        } catch (e) {
-          print('socket');
-          return showInternetErrorDialog(context);
         }
 
     });

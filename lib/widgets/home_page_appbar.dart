@@ -81,9 +81,6 @@ class HomePageAppBarWidgetState extends State<HomePageAppBarWidget> {
                                 }),
                               );
                             })
-
-
-
           ),
           Align(
             alignment: arabicLanguage ? Alignment.topRight : Alignment.topLeft,

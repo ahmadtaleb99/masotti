@@ -344,7 +344,7 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
   resendVerificationSms(phone) async {
     final String url = 'resend-verification-sms';
 
-    final data =await  NetworkingHelper.postData(url: url, body: {'phone': phone});
+    final data =await  NetworkingHelper.postData(url, body: {'phone': phone});
 
 
       if (data['status']) {
@@ -384,7 +384,7 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
       setState(() => isLoading = 0);
 
 
-      final data = await NetworkingHelper.postData(url: url, body: credentials);
+      final data = await NetworkingHelper.postData( url, body: credentials);
       if (data['status']) {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString(Constants.keyAccessToken, data['token']);

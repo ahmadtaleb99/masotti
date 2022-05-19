@@ -2,6 +2,9 @@ import 'package:async/async.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:masotti/services/DialogService.dart';
+import 'package:masotti/services/networking.dart';
+import 'package:masotti/utils.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../assets/flutter_custom_icons.dart';
@@ -333,22 +336,19 @@ class AddAddressState extends State<AddAddress> {
   }
 
   addAddress() async {
+    LoadingService.instance.show(context);
     setState(() => isLoading = 1);
+      try {final String url = 'add-address';
+      final prefs = await SharedPreferences.getInstance();
+      String? accessToken = prefs.getString(Constants.keyAccessToken);
 
-    final String url = 'add-address';
-    final prefs = await SharedPreferences.getInstance();
-    String? accessToken = prefs.getString(Constants.keyAccessToken);
+      if (accessToken != null) {
+        final data = await NetworkingHelper.postData(  url ,body: address.toJson(),
+            headers: {
+              'Authorization': 'Bearer ' + accessToken,
+              'referer': Constants.apiReferer
+            });
 
-    if (accessToken != null) {
-      final response = await http.post(Uri.parse(Constants.apiUrl + url),
-          body: address.toJson(),
-          headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'referer': Constants.apiReferer
-          });
-
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
         if (data['status']) {
           CustomDialog(
             context: context,
@@ -366,9 +366,9 @@ class AddAddressState extends State<AddAddress> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => CartPage(
-                              fromSideMenu: false,
-                            ))).then(
-                  (value) => setState(() {
+                          fromSideMenu: false,
+                        ))).then(
+                      (value) => setState(() {
                     itemsInCart =
                         prefs.getInt(Constants.keyNumberOfItemsInCart);
                   }),
@@ -402,9 +402,14 @@ class AddAddressState extends State<AddAddress> {
           ).showCustomDialog();
         }
       }
-    }
 
-    setState(() => isLoading = 0);
+      setState(() => isLoading = 0);}
+      catch (e){
+        showInternetErrorDialog(context);
+      }
+
+    LoadingService.instance.hide();
+
   }
 
   getCities() async {
