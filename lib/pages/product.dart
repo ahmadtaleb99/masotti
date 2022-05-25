@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
+import 'package:share_plus/share_plus.dart';
 import '../widgets/custom_appbar_2.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -24,7 +25,6 @@ import '../side_menu.dart';
 import '../widgets/alert_dialog.dart';
 import '../widgets/request_empty_data.dart';
 import '../models/product.dart';
-import 'package:share/share.dart';
 
 import 'cart.dart';
 

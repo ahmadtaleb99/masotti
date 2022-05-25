@@ -50,7 +50,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
- await Firebase.initializeApp();
+ // await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
       (_) => runApp(EasyLocalization(
           supportedLocales: [Locale('ar', 'DZ'), Locale('en', 'US')],
@@ -71,6 +71,7 @@ class MyAppState extends State<MyApp> {
   Future checkTokenAndUnReadNotifications() async {
     try {
       final uri = await UniLinks.getInitialUri();
+        log('inital uri : : : ::'+uri.toString());
       if (uri != null) {
         return _handleInitialUri(uri);
       }
@@ -138,13 +139,14 @@ class MyAppState extends State<MyApp> {
   void _handleIncomingUri (){
 
       _incomingUriStream = UniLinks.linkStream.listen((uri) {
+        log('uri:::: '+uri.toString());
         if(_initialUriIsHandled)
           goToProductFromUri(Uri.parse(uri!));
 
         });
 
   }
-  final FirebaseMessaging fireBaseMessaging = FirebaseMessaging.instance;
+  // final FirebaseMessaging fireBaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
   bool redirectToChooseLanguagePage = false;
@@ -183,7 +185,7 @@ class MyAppState extends State<MyApp> {
   subscribeToGeneralNotifications() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(Constants.keyGeneralNotifications)) {
-      fireBaseMessaging.subscribeToTopic('general_notifications');
+      // fireBaseMessaging.subscribeToTopic('general_notifications');
       prefs.setBool(Constants.keyGeneralNotifications, true);
     }
   }
@@ -200,60 +202,64 @@ class MyAppState extends State<MyApp> {
 
     super.initState();
     checkIfFirstRun();
-    subscribeToGeneralNotifications();
+    // subscribeToGeneralNotifications();
 
-    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = new IOSInitializationSettings();
-    var macOS = new MacOSInitializationSettings();
-    var initSettings =
-        new InitializationSettings(android: android, iOS: iOS, macOS: macOS);
-    flutterLocalNotificationsPlugin.initialize(initSettings,
-        onSelectNotification: onSelectNotification);
+    // var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    // var iOS = new IOSInitializationSettings();
+    // var macOS = new MacOSInitializationSettings();
+    // var initSettings =
+    //     new InitializationSettings(android: android, iOS: iOS, macOS: macOS);
+    // flutterLocalNotificationsPlugin.initialize(initSettings,
+    //     onSelfectNotification: onSelectNotification);
+    //
+    // if (Platform.isIOS) {
+    //   // fireBaseMessaging.onIosSettingsRegistered.listen((data) {
+    //   //   // save the token  OR subscribe to a topic here
+    //   // });
+    //   fireBaseMessaging.requestPermission(
+    //       alert: true,
+    //       announcement: false,
+    //       badge: true,
+    //       carPlay: false,
+    //       criticalAlert: false,
+    //       provisional: false,
+    //       sound: true );
+    // }
+    // if (Platform.isMacOS) {
+    //   flutterLocalNotificationsPlugin
+    //       .resolvePlatformSpecificImplementation<
+    //           MacOSFlutterLocalNotificationsPlugin>()
+    //       ?.requestPermissions(
+    //         alert: true,
+    //         badge: true,
+    //         sound: true,
+    //       );
+    //
+    // }
+    //
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print("onMessage: $message");
+    //   saveNotificationToLocalStorage();
+    //   PushNotification notification = PushNotification.fromJson(message.data);
+    //   showNotification(
+    //       notification.title, notification.body, notification.imageUrl);
+    // });
+    //
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print("onResume: $message");
+    //   saveNotificationToLocalStorage();
+    //   PushNotification notification = PushNotification.fromJson(message.data);
+    //   showNotification(
+    //       notification.title, notification.body, notification.imageUrl);
+    // });
+    //
 
-    if (Platform.isIOS) {
-      // fireBaseMessaging.onIosSettingsRegistered.listen((data) {
-      //   // save the token  OR subscribe to a topic here
-      // });
-      fireBaseMessaging.requestPermission(
-          alert: true,
-          announcement: false,
-          badge: true,
-          carPlay: false,
-          criticalAlert: false,
-          provisional: false,
-          sound: true );
-    }
-    if (Platform.isMacOS) {
-      flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              MacOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
 
-    }
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("onMessage: $message");
-      saveNotificationToLocalStorage();
-      PushNotification notification = PushNotification.fromJson(message.data);
-      showNotification(
-          notification.title, notification.body, notification.imageUrl);
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("onResume: $message");
-      saveNotificationToLocalStorage();
-      PushNotification notification = PushNotification.fromJson(message.data);
-      showNotification(
-          notification.title, notification.body, notification.imageUrl);
-    });
 
 
     _handleIncomingUri();
 
+///usr/bin/xcrun simctl openurl booted "https://flexsolutions.biz/apps/masotti/products/view?id=1400"
   }
 
   @override

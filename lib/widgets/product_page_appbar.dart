@@ -5,6 +5,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../models/product.dart';
 import 'package:photo_view/photo_view.dart';
 import '../constants.dart';
+import 'dart:math' as math; // import this
 
 class ProductPageAppBarWidget extends StatefulWidget
     implements PreferredSizeWidget {
@@ -35,9 +36,13 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
     Radius radius = Radius.circular(Constants.borderRadius);
     arabicLanguage =
         Localizations.localeOf(context).languageCode == 'ar' ? true : false;
-    BorderRadius borderRadius = arabicLanguage
+    BorderRadius drawerRadius = arabicLanguage
         ? BorderRadius.only(bottomLeft: radius, topLeft: radius)
         : BorderRadius.only(bottomRight: radius, topRight: radius);
+
+    BorderRadius backButtonRadius = arabicLanguage
+        ? BorderRadius.only(bottomRight: radius, topRight: radius)
+        : BorderRadius.only(bottomLeft: radius, topLeft: radius) ;
     double containerWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -56,9 +61,12 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                       firstImage = index;
                       _pageController =
                           PageController(initialPage: firstImage);
-                      return Container(
-                        color: Colors.black,
-                        child: PhotoViewGallery.builder(
+                      return Scaffold(
+                        appBar: AppBar(
+                        backgroundColor: Colors.black,
+                        ),
+                        backgroundColor: Colors.black,
+                        body: PhotoViewGallery.builder(
                           pageController: _pageController,
                           builder: (BuildContext context, int index) {
                             return PhotoViewGalleryPageOptions(
@@ -95,7 +103,7 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                 height: 40,
                 margin: EdgeInsets.only(top: 40),
                 decoration: BoxDecoration(
-                    borderRadius: borderRadius, color: Constants.whiteColor),
+                    borderRadius: drawerRadius, color: Constants.whiteColor),
                 child: IconButton(
                   icon: SvgPicture.asset(
                     Constants.sideMenuImage,
@@ -104,6 +112,24 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                   onPressed: () => widget.scaffoldKey!.currentState!.openDrawer(),
                 )),
           ),
+          // Align(
+          //   alignment: arabicLanguage ? Alignment.topLeft : Alignment.topRight,
+          //   child: Container(
+          //       width: 60,
+          //       height: 40,
+          //       margin: EdgeInsets.only(top: 40),
+          //       decoration: BoxDecoration(
+          //           borderRadius: backButtonRadius, color: Constants.whiteColor),
+          //       child: IconButton(
+          //         icon: Transform(
+          //           alignment: Alignment.center,
+          //           transform: Matrix4.rotationY(math.pi),
+          //           child: Icon(Icons.arrow_back_ios_rounded),
+          //         ),
+          //         color: Constants.identityColor,
+          //         onPressed: () => Navigator.pop(context),
+          //       )),
+          // ),
         ],
       ),
     );

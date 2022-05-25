@@ -11,7 +11,7 @@ class ColoredCircularProgressIndicator extends StatelessWidget{
   Widget build(BuildContext context) {
     return Center(
       child:
-      CircularProgressIndicator.adaptive(
+      CircularProgressIndicator(
         backgroundColor: Colors.grey,
         valueColor: new AlwaysStoppedAnimation<Color>(Constants.redColor),
       ),

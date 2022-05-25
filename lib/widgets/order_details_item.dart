@@ -140,54 +140,62 @@ class OrderDetailsItemWidget extends StatelessWidget {
                                           mainAxisAlignment:
                                           MainAxisAlignment.end,
                                           children: <Widget>[
-                                            Container(
-                                              // width: colorSizeContainerWidth,
-                                              // height:
-                                              // colorSizeContainerWidth / 2,
-                                              padding: EdgeInsets.only(right: 10, left: 10, top: 5),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Constants
-                                                        .identityColor),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(Constants
-                                                        .borderRadius)),
-                                                color: Constants.whiteColor,
-                                              ),
-                                              child: AutoSizeText(
-                                                variant!['size'],
-                                                style: TextStyle(
-                                                  color:
-                                                  Constants.identityColor,
-                                                  fontWeight: FontWeight.bold
+                                            Expanded(
+                                        flex:2,
+
+                                        child: Container(
+                                                // width: colorSizeContainerWidth,
+                                                // height:
+                                                // colorSizeContainerWidth / 2,
+                                                padding: EdgeInsets.only(right: 10, left: 10, top: 5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Constants
+                                                          .identityColor),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(Constants
+                                                          .borderRadius)),
+                                                  color: Constants.whiteColor,
                                                 ),
-                                                maxFontSize: Constants.fontSize,
-                                                minFontSize: Constants.fontSize - 2,
+                                                child: AutoSizeText(
+                                                  variant!['size'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color:
+                                                    Constants.identityColor,
+                                                    fontWeight: FontWeight.bold
+                                                  ),
+                                                  maxFontSize: Constants.fontSize,
+                                                  minFontSize: Constants.fontSize - 2,
+                                                ),
                                               ),
                                             ),
-                                            Container(
-                                              width: colorSizeContainerWidth / 2,
-                                              height:
-                                              colorSizeContainerWidth / 2,
-                                              margin: arabicLanguage
-                                                  ? EdgeInsets.only(right: 5)
-                                                  : EdgeInsets.only(left: 5),
-                                              child: Stack(
-                                                children: [
-                                                  Positioned(
-                                                    child: Icon(Icons.brightness_1,
-                                                        size: 23,
-                                                        color: Colors
-                                                            .grey[400]),
-                                                  ),
-                                                  Icon(Icons.brightness_1,
-                                                      size: 22,
-                                                      color: Color(int.parse(
-                                                          '0xFF' +
-                                                              variant!['color']
-                                                                  .toString()))),
-                                                ],
+                                            Expanded(
+
+                                              child: Container(
+                                                width: colorSizeContainerWidth / 2,
+                                                height:
+                                                colorSizeContainerWidth / 2,
+                                                margin: arabicLanguage
+                                                    ? EdgeInsets.only(right: 5)
+                                                    : EdgeInsets.only(left: 5),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      child: Icon(Icons.brightness_1,
+                                                          size: 23,
+                                                          color: Colors
+                                                              .grey[400]),
+                                                    ),
+                                                    Icon(Icons.brightness_1,
+                                                        size: 22,
+                                                        color: Color(int.parse(
+                                                            '0xFF' +
+                                                                variant!['color']
+                                                                    .toString()))),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],

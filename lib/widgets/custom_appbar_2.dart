@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
@@ -52,6 +54,7 @@ class CustomAppBarWidgetState extends State<CustomAppBarWidget> {
       ),
       backgroundColor: Constants.identityColor,
       centerTitle: true,
+
       leading: Builder(
         builder: (context) {
           return Container(
@@ -68,6 +71,7 @@ class CustomAppBarWidgetState extends State<CustomAppBarWidget> {
       ),
       elevation: 0,
       actions: [
+
         widget.cartIconExist! && !widget.isCartPage!
             ? InkWell(
                 onTap: () async {

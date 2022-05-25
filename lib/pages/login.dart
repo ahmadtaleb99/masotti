@@ -377,12 +377,11 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
     try {
       setState(() => isLoading = 1);
       final String url = 'login-customer';
-      final FirebaseMessaging fcm = FirebaseMessaging.instance;
-      final tokenResponse = await (fcm.getToken() as Future<String?>);
-      credentials['device_token'] =
-      tokenResponse != null ? tokenResponse : null;
+      // final FirebaseMessaging fcm = FirebaseMessaging.instance;
+      // final tokenResponse = await (fcm.getToken() as Future<String?>);
+      // credentials['device_token'] =
+      // tokenResponse != null ? tokenResponse : null;
 
-      setState(() => isLoading = 0);
 
 
       final data = await NetworkingHelper.postData( url, body: credentials);
@@ -471,8 +470,12 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
     } }on TimeoutException {
         showInternetErrorDialog(context);
       } catch (e) {
+      print(e);
         print('socket');
         showInternetErrorDialog(context);
+      }
+      finally {
+        setState(() => isLoading = 0);
       }
     _loadingDialog.hide();
 

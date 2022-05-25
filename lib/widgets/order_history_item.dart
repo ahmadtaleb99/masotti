@@ -110,56 +110,63 @@ class OrderHistoryItemWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: AutoSizeText(
-                            'Order ID: '.tr() + orderId,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            maxFontSize: Constants.fontSize + 2,
-                            minFontSize: Constants.fontSize,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: AutoSizeText(
-                            price + 'Currency'.tr(),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            maxFontSize: Constants.fontSize + 2,
-                            minFontSize: Constants.fontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                    AutoSizeText(
-                      'Address: '.tr() + address!,
-                      style: TextStyle(height: 1.6),
-                      maxFontSize: Constants.fontSize - 2,
-                      minFontSize: Constants.fontSize - 4,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AutoSizeText(
-                          'Created Date: '.tr() + createdDate!,
-                          style: TextStyle(height: 1.6),
-                          maxFontSize: Constants.fontSize - 2,
-                          minFontSize: Constants.fontSize - 4,
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          child:  Transform.rotate(
-                            angle: arabicLanguage ? 3.14 / 2 : -3.14 / 2,
-                            child: Icon(
-                              MyFlutterApp.path_261,
-                              color: Constants.identityColor,
-                              size: 10,
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: AutoSizeText(
+                              'Order ID: '.tr() + orderId,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              maxFontSize: Constants.fontSize + 2,
+                              minFontSize: Constants.fontSize,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: AutoSizeText(
+                              price + 'Currency'.tr(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              maxFontSize: Constants.fontSize + 2,
+                              minFontSize: Constants.fontSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: AutoSizeText(
+                        'Address: '.tr() + address!,
+                        style: TextStyle(height: 1.6),
+                        maxFontSize: Constants.fontSize - 2,
+                        minFontSize: Constants.fontSize - 4,
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AutoSizeText(
+                            'Created Date: '.tr() + createdDate!,
+                            style: TextStyle(height: 1.6),
+                            maxFontSize: Constants.fontSize - 2,
+                            minFontSize: Constants.fontSize - 4,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            child:  Transform.rotate(
+                              angle: arabicLanguage ? 3.14 / 2 : -3.14 / 2,
+                              child: Icon(
+                                MyFlutterApp.path_261,
+                                color: Constants.identityColor,
+                                size: 10,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
