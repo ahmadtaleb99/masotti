@@ -51,6 +51,7 @@ dependencies:
   flutter_svg: ^1.0.3
   form_builder_validators: ^8.1.0
   carousel_slider: ^4.1.1
+  firebase_core: ^1.12.0
 
 dev_dependencies:
   flutter_test:

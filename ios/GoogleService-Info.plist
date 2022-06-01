@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>214938933059-kvua3jcne89ru6q47vbeuqc710e5rcsp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.214938933059-kvua3jcne89ru6q47vbeuqc710e5rcsp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCC-zkuef0uBG_W81kCtypnS6cNAPiuxTM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>214938933059</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.flexsolutions.masotti</string>
+	<key>PROJECT_ID</key>
+	<string>masotti-d39ba</string>
+	<key>STORAGE_BUCKET</key>
+	<string>masotti-d39ba.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:214938933059:ios:f8c8322d9a59028ed3c1f6</string>
+	<key>DATABASE_URL</key>
+	<string>https://masotti-d39ba.firebaseio.com</string>
+</dict>
+</plist>
