@@ -1,12 +1,15 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../widgets/custom_appbar_2.dart';
-
+import 'dart:async';
+import 'dart:io';
+import 'package:path/path.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
@@ -103,12 +106,12 @@ class ProductPageState extends State<ProductPage> {
 
     log('colors :::: ${_colors.toString()}    sizeColorsList :::: ${_sizeColorsList.toString()}     existedColorList :::: ${_existedColorList.toString()}');
     log(' lengths : : : :: colors :::: ${_colors.length}    sizeColorsList :::: ${_sizeColorsList.length}     existedColorList :::: ${_existedColorList.length}');
-      for(var item in _colors)
-        {
-          _existedColorList.add(false);
-          _isSelectedColorsList.add(false);
+    for(var item in _colors)
+    {
+      _existedColorList.add(false);
+      _isSelectedColorsList.add(false);
 
-        }
+    }
     for (int i = 0; i < _colors.length; i++) {
       for (int j = 0; j < _sizeColorsList.length; j++)  {
         if (_colors[i] == _sizeColorsList[j])
@@ -313,13 +316,13 @@ class ProductPageState extends State<ProductPage> {
                         message: response,
                       ),
                     ),
-                 if(response == Constants.requestErrorMessage)   CustomRedButton(text: 'Retry', onPressed: (){
-                   setState(() {
-                     Navigator.pushReplacement(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => ProductPage(id: id)));
-                   });
+                    if(response == Constants.requestErrorMessage)   CustomRedButton(text: 'Retry', onPressed: (){
+                      setState(() {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductPage(id: id)));
+                      });
 
                     }
                     )
@@ -509,19 +512,38 @@ class ProductPageState extends State<ProductPage> {
                                               maxFontSize: Constants
                                                   .fontSize + 2,
                                             ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  Share.share(
-                                                      'https://flexsolutions.biz/apps/masotti/products/view?id=' +
-                                                          product.id),
-                                              child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      left:
-                                                      Constants.halfPadding),
-                                                  child: Icon(
-                                                    MyFlutterApp.share,
-                                                    color: Constants.redColor,
-                                                  )),
+                                            Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                borderRadius: BorderRadius.circular(50),
+                                                onTap: () async {
+                                                  var imageUrl = Constants.apiFilesUrl +product.images!.first['path']!;
+                                                  var image =   await  downloadImageToCache(imageUrl:imageUrl);
+
+
+
+                                                  log('here');
+                                                  // log(product.images!.first);
+                                                  log(product.images.toString());
+                                                  log(product.nameAr!);
+                                                  await  Share.shareFiles(
+                                                      [image.path],
+
+                                                      text:  'https://flexsolutions.biz/apps/masotti/products/view?id=' +
+                                                          product.id);
+                                                }
+                                                ,
+                                                child: Container(
+
+                                                    padding: EdgeInsets.only(
+                                                        left:
+                                                        Constants.halfPadding),
+                                                    child: Icon(
+                                                      MyFlutterApp.share,
+                                                      color: Constants.redColor,
+
+                                                    )),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -922,10 +944,10 @@ class ProductPageState extends State<ProductPage> {
                                               minWidth: containerWidth / 2,
                                               height: 50,
                                               child: CustomRedButton(
-                                                text: 'Add To Cart' ,
-                                                onPressed: () =>
-                                                    addToCartBottomSheet(
-                                                        context)
+                                                  text: 'Add To Cart' ,
+                                                  onPressed: () =>
+                                                      addToCartBottomSheet(
+                                                          context)
                                               ),
                                             ),
                                             SizedBox(width: 5),
@@ -1064,7 +1086,6 @@ class ProductPageState extends State<ProductPage> {
       final String url = 'get-product?product_id=$productId';
       var data = await NetworkingHelper.getData(url) ;
 
-
       if (data['status']) {
         List? variantsChoices = data['variants'];
         data = data['data'];
@@ -1096,4 +1117,23 @@ class ProductPageState extends State<ProductPage> {
 
     // });
   }
+
+  Future<File>  downloadImageToCache({required String imageUrl}) async {
+    var fileName = basename(imageUrl);
+    var tempDir = await getTemporaryDirectory();
+    final path = '${tempDir.path}/$fileName';
+
+    var file =  File(path);
+    if(await file.exists()){
+      return file;
+    }
+
+    final response = await http.get(Uri.parse(imageUrl));
+    var bytes = response.bodyBytes;
+
+    return file.writeAsBytes(bytes);
+
+
+  }
+
 }
