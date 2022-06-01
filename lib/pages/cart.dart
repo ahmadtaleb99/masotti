@@ -694,16 +694,14 @@ class CartPageState extends State<CartPage> {
                                                                     ? cartOrder
                                                                             .products![index][
                                                                                 'sales_price']
-                                                                            .toString() +
-                                                                        'Currency'
-                                                                            .tr()
+                                                                            .toString() +    (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() )
+
                                                                     : (cartOrder.products![index]['price'].toString().endsWith('.0')
                                                                             ? cartOrder.products![index]['price'].toString().replaceAll('.0',
                                                                                 '')
                                                                             : cartOrder.products![index][
                                                                                 'price']) +
-                                                                        'Currency'
-                                                                            .tr(),
+                                                                    (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                                 style: TextStyle(
                                                                     color: Constants
                                                                         .identityColor,
@@ -915,12 +913,10 @@ class CartPageState extends State<CartPage> {
                                                                             null
                                                                     ? (double.parse(cartOrder.products![index]['sales_price'].toString()) * double.parse(cartOrder.products![index]['quantity']))
                                                                             .toString() +
-                                                                        'Currency'
-                                                                            .tr()
+                                                                    (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() )
                                                                     : (double.parse(cartOrder.products![index]['price']) * double.parse(cartOrder.products![index]['quantity']))
                                                                             .toString() +
-                                                                        'Currency'
-                                                                            .tr(),
+                                                                    (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                                 style: TextStyle(
                                                                     color: Constants
                                                                         .identityColor,
