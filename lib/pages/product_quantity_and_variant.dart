@@ -191,7 +191,7 @@ class ProductQuantityAndVariantState extends State<ProductQuantityAndVariant> {
                     (widget.salesPrice != 'null'
                             ? widget.salesPrice
                             : widget.price)! +
-                        'Currency'.tr(),
+                        (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                     textAlign: TextAlign.end,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     maxFontSize: Constants.fontSize,

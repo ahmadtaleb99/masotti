@@ -63,7 +63,7 @@ class OfferWidgetState extends State<OfferWidget>{
                 padding: EdgeInsets.only(bottom: 5),
                 alignment: Alignment.bottomCenter,
                 child: AutoSizeText(
-                  widget.newPrice + 'Currency'.tr(),
+                  widget.newPrice + (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Constants.whiteColor, 

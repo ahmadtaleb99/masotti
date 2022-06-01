@@ -282,7 +282,7 @@ class OrderDetailsItemWidget extends StatelessWidget {
                                 ? EdgeInsets.only(left: 10)
                                 : EdgeInsets.only(right: 10),
                             child: AutoSizeText(
-                              price.toString() + 'Currency'.tr(),
+                              price.toString() + (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                               style: TextStyle(
                                 color: Constants.identityColor,
                                 fontWeight: FontWeight.bold

@@ -1292,7 +1292,7 @@ class CartPageState extends State<CartPage> {
                                                                             [
                                                                             'price']
                                                                         .toString()) +
-                                                                'Currency'.tr(),
+                                                                (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                             style: TextStyle(
                                                                 color: Constants
                                                                     .identityColor,
@@ -1509,7 +1509,7 @@ class CartPageState extends State<CartPage> {
                                                                             .offers![index]['quantity']
                                                                             .toString()))
                                                                     .toString() +
-                                                                'Currency'.tr(),
+                                                                (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                             style: TextStyle(
                                                                 color: Constants
                                                                     .identityColor,
@@ -1571,7 +1571,7 @@ class CartPageState extends State<CartPage> {
                                                                     .toString() ==
                                                                 'true'
                                                             ? '%'
-                                                            : 'Currency'.tr()),
+                                                            : (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() )),
                                                 style: TextStyle(
                                                     color: Constants.redColor,
                                                     fontWeight:
@@ -1668,7 +1668,7 @@ class CartPageState extends State<CartPage> {
                                             right: Constants.halfPadding),
                                     child: AutoSizeText(
                                       calculatePrices()['subTotal'].toString() +
-                                          'Currency'.tr(),
+                                          (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                       style: TextStyle(
                                           color: Constants.identityColor,
                                           fontWeight: FontWeight.bold),
@@ -1752,7 +1752,7 @@ class CartPageState extends State<CartPage> {
                                               right: Constants.halfPadding),
                                       child: AutoSizeText(
                                         calculatePrices()['total'].toString() +
-                                            'Currency'.tr(),
+                                            (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                         style: TextStyle(
                                             color: Constants.identityColor,
                                             fontWeight: FontWeight.bold),

@@ -127,7 +127,7 @@ class OrderHistoryItemWidget extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.only(bottom: 10),
                             child: AutoSizeText(
-                              price + 'Currency'.tr(),
+                              price + (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                               style: TextStyle(fontWeight: FontWeight.bold),
                               maxFontSize: Constants.fontSize + 2,
                               minFontSize: Constants.fontSize,

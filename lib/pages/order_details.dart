@@ -228,7 +228,7 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                                                   orderDetails[
                                                                       'delivery_cost'])
                                                               .toString() +
-                                                          'Currency'.tr(),
+                                                          (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -246,7 +246,7 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                                       orderDetails[
                                                                   'total_price']
                                                               .toString() +
-                                                          'Currency'.tr(),
+                                                          (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -263,7 +263,7 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                           'Price: '.tr() +
                                               (orderDetails['total_price'] + 0)
                                                   .toString() +
-                                              'Currency'.tr(),
+                                              (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                           style: TextStyle(
                                               color: Constants.identityColor,
                                               height: 1.5),
@@ -285,10 +285,10 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                                         orderDetails[
                                                                 'delivery_cost']
                                                             .toString() +
-                                                        'Currency'.tr()
+                                                        (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() )
                                                     : 'Delivery Cost: '.tr() +
                                                         0.toString() +
-                                                        'Currency'.tr(),
+                                                        (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                 style: TextStyle(
                                                     color:
                                                         Constants.identityColor,
@@ -316,13 +316,13 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
                                                                 orderDetails[
                                                                     'delivery_cost'])
                                                             .toString() +
-                                                        'Currency'.tr()
+                                                        (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() )
                                                     : 'Total Price: '.tr() +
                                                         (orderDetails[
                                                                     'total_price'] +
                                                                 0)
                                                             .toString() +
-                                                        'Currency'.tr(),
+                                                        (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                 style: TextStyle(
                                                     color:
                                                         Constants.identityColor,

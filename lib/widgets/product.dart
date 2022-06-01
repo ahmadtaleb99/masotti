@@ -163,7 +163,7 @@ class ProductWidget extends StatelessWidget {
                                             minFontSize: Constants.fontSize - 5,
                                           ),
                                           AutoSizeText(
-                                            'Currency'.tr(),
+                                            (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                             style: TextStyle(
                                                 color: Constants.whiteColor,
                                             ),
@@ -176,7 +176,7 @@ class ProductWidget extends StatelessWidget {
                                         (price.endsWith('.0')
                                                 ? price.replaceAll('.0', '')
                                                 : price) +
-                                            'Currency'.tr(),
+                                            (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                         style: TextStyle(
                                             color: Constants.whiteColor,
                                         ),

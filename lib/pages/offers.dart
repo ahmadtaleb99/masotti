@@ -265,7 +265,7 @@ class OffersPageState extends State<OffersPage> {
                                                         child: AutoSizeText(
                                                           offers[index]
                                                                   .newPrice +
-                                                              'Currency'.tr(),
+                                                              (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: TextStyle(

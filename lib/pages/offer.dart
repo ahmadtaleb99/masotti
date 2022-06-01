@@ -571,7 +571,7 @@ class OfferPageState extends State<OfferPage> {
                                 ),
                               ),
                               AutoSizeText(
-                                offer.newPrice + 'Currency'.tr(),
+                                offer.newPrice + (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                 style: TextStyle(
                                   color: Constants.identityColor,
                                 ),

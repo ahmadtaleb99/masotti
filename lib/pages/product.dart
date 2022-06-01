@@ -401,7 +401,7 @@ class ProductPageState extends State<ProductPage> {
                                             ? Alignment.centerLeft
                                             : Alignment.centerRight,
                                         child: AutoSizeText(
-                                          product.price! + 'Currency'.tr(),
+                                          product.price! + (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                           style: TextStyle(
                                               color:
                                               Constants.identityColor,
@@ -430,7 +430,7 @@ class ProductPageState extends State<ProductPage> {
                                               // ),
                                               AutoSizeText(
                                                 product.price! +
-                                                    'Currency'.tr(),
+                                                    (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                 style: TextStyle(
                                                   color: Constants
                                                       .identityColor,
@@ -465,7 +465,7 @@ class ProductPageState extends State<ProductPage> {
                                                 // ),
                                                 AutoSizeText(
                                                   product.salesPrice +
-                                                      'Currency'.tr(),
+                                                      (Constants.removeSyrianIdentity ? '' :  'Currency'.tr() ),
                                                   style: TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold,

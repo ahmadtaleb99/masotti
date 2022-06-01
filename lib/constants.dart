@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -88,4 +90,9 @@ class Constants{
     return "$secondsStr";
   }
 
+
+
+
+    static const  bool appStorePreparing = true;
+  static bool removeSyrianIdentity = Platform.isIOS && appStorePreparing;
 }
