@@ -268,6 +268,7 @@ class MyAppState extends State<MyApp> {
       builder: (context, snap) {
         if (!snap.hasData) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             home: Container(
               color: Constants.whiteColor,
               child: Center(
@@ -304,6 +305,7 @@ class MyAppState extends State<MyApp> {
             redirectToChooseLanguagePage ? FirstRunPage(productId: initialDeepLinkUri != null ? _getProductIdFromUri(initialDeepLinkUri!) : null,) : snap.data as Widget;
         return OverlaySupport(
           child: MaterialApp(
+            debugShowCheckedModeBanner: false,
             onGenerateRoute: getRoute,
             navigatorKey: navigatorKey,
             theme: ThemeData(

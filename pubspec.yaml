@@ -61,7 +61,7 @@ dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6
 flutter_icons:
 
-  image_path: "assets/images/launcher_icon.png" 
+  image_path: "assets/images/masotti-logo.png"
   android: true
   ios: true
   
