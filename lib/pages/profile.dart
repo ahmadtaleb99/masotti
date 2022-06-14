@@ -146,7 +146,7 @@ class ProfilePageState extends State<ProfilePage> {
                                         Radius.circular(Constants.borderRadius))),
                                 margin: EdgeInsets.zero,
                                 child: Center(
-                                  child: DateTimeField(
+                                  child:  DateTimeField(
                                     decoration: InputDecoration(
                                       hintText: 'Birth Date'.tr(),
                                       border: InputBorder.none,
@@ -178,12 +178,13 @@ class ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ),
                                     validator: (value) {
-                                      return value == null
-                                          ? 'Birth Date can\'t be empty'
-                                          : null;
+                                      // return value == null
+                                      //     ? 'Birth Date can\'t be empty'
+                                      //     : null;
                                     },
                                     initialValue:
-                                        DateTime.parse(customer.birthDate!),
+                                        customer.birthDate != null ?
+                                        DateTime.parse(customer.birthDate!) : null,
                                     format: DateFormat('yyyy-MM-dd'),
                                     onShowPicker: (context, value) async {
                                       final date =
@@ -216,10 +217,10 @@ class ProfilePageState extends State<ProfilePage> {
                                                   : LocaleType.en);
                                       return date;
                                     },
-                                  ),
+                                  ) ,
                                 ),
                               ),
-                              Container(
+                     Container(
                                 padding:
                                     EdgeInsets.only(bottom: Constants.padding),
                                 child: DropdownButtonHideUnderline(
@@ -257,7 +258,9 @@ class ProfilePageState extends State<ProfilePage> {
                                           isExpanded: false,
                                           iconEnabledColor:
                                               Constants.identityColor,
-                                          value: selectedGender!.tr(),
+                                          disabledHint: Text('select'),
+
+                                          value: selectedGender?.tr()  ,
                                           items: [
                                             'Male'.tr(),
                                             'Female'.tr(),
@@ -283,7 +286,7 @@ class ProfilePageState extends State<ProfilePage> {
                                             });
                                           },
                                         ))),
-                              ),
+                              ) ,
                               Container(
                                 padding: EdgeInsets.only(top: Constants.padding),
                                 alignment: Alignment.center,
@@ -399,6 +402,7 @@ class ProfilePageState extends State<ProfilePage> {
           if (data['status']) {
             data = data['data'];
             Customer customer = Customer.getCustomerFromData(data);
+            log(customer.toString());
             selectedGender = customer.gender;
             return customer;
           }

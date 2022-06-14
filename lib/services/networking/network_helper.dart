@@ -49,7 +49,6 @@ throw FetchDataException(message: 'Error Occurred while getting data'.tr());
   }
 
   static dynamic _returnResponse(http.Response response) {
-    log('network class : :: '+response.statusCode.toString()+'  ' +response.body.toString());
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());

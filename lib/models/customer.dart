@@ -41,17 +41,30 @@ class Customer{
   }
 
   Map<String, dynamic> toJson() {
+    if(this.gender == null)
     return {
       'first_name': this.firstName.toString(),
       'last_name': this.lastName.toString(),
       'email': this.email.toString(),
       'password': this.password.toString(),
       'phone': this.mobilePhone.toString(),
-      'birth_date': this.birthDate.toString(),
-      'gender': this.gender.toString(),
+      'birth_date': this.birthDate ?? '' ,
       'old_password': this.oldPassword.toString(),
       'reset_password_code': this.resetPasswordCode.toString()
     };
+
+    else
+      return {
+        'first_name': this.firstName.toString(),
+        'last_name': this.lastName.toString(),
+        'email': this.email.toString(),
+        'password': this.password.toString(),
+        'phone': this.mobilePhone.toString(),
+        'birth_date': this.birthDate ?? '' ,
+        'gender': this.gender ?? null  ,
+        'old_password': this.oldPassword.toString(),
+        'reset_password_code': this.resetPasswordCode.toString()
+      };
   }
 
   @override

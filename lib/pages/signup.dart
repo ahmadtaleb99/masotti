@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -169,9 +171,9 @@ class SignupPageState extends State<SignupPage> {
                                   ),
                                 ),
                                 validator: (value) {
-                                  return value == null
-                                      ? 'Birth Date can\'t be empty'
-                                      : null;
+                                  // return value == null
+                                  //     ? 'Birth Date can\'t be empty'
+                                  //     : null;
                                 },
                                 format: DateFormat('yyyy-MM-dd'),
                                 onShowPicker: (context, value) async {
@@ -306,17 +308,18 @@ class SignupPageState extends State<SignupPage> {
                                             customer.password ==
                                                 customer.confirmPassword;
                                         if (_formKey.currentState!.validate() &&
-                                            selectedGender != null &&
+                                            // selectedGender != null &&
                                             checkPassword) {
                                           _formKey.currentState!.save();
+                                          log('here');
                                           signup(customer);
-                                        } else if (selectedGender == null ||
+                                        } else if (
                                             !checkPassword) {
                                           setState(() {
-                                            if (selectedGender == null) {
-                                              emptySelectedGender =
-                                                  'Gender can\'t be empty'.tr();
-                                            }
+                                            // if (selectedGender == null) {
+                                            //   emptySelectedGender =
+                                            //       'Gender can\'t be empty'.tr();
+                                            // }
                                             confirmPasswordError = !checkPassword
                                                 ? 'Confirm password must match password'
                                                     .tr()
