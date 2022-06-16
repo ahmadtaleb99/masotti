@@ -192,7 +192,7 @@ class ProfilePageState extends State<ProfilePage> {
                                               theme: DatePickerTheme(
                                                   containerHeight: 210.0,
                                                   itemStyle: TextStyle(
-                                                      fontFamily: 'Tajawal'),
+                                                      fontFamily: 'Tajawal')  ,
                                                   cancelStyle: TextStyle(
                                                       color: Constants.linkColor,
                                                       fontFamily: 'Tajawal'),

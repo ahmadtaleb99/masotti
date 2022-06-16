@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/assets/flutter_custom_icons.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
 import '../widgets/custom_dialog.dart';
 import '../assets/my_flutter_app_icons.dart';
@@ -126,7 +127,6 @@ class CartPageState extends State<CartPage> {
                     message: response,
                   );
                 }
-
                 // ADDRESSES
                 final keysValuesAddresses = [];
                 keysValuesAddresses
@@ -162,7 +162,9 @@ class CartPageState extends State<CartPage> {
                     });
                   }
                 }
-
+                if(cartOrder.products == null)
+                  return EmptyCartWidget();
+                  else
                 return Container(
                   child: Column(
                     children: <Widget>[
@@ -2419,5 +2421,38 @@ class CartPageState extends State<CartPage> {
     Navigator.pop(context);
 
     setState(() => isLoading = 0);
+  }
+}
+
+
+class EmptyCartWidget extends StatelessWidget {
+  const EmptyCartWidget({Key? key}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height / 3.5,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(CustomIcons.cart,size: 100, color: Constants.identityColor,),
+              SizedBox(height: 20,),
+              AutoSizeText(
+                'Your Cart Is Empty'.tr(),
+                style: TextStyle(
+                  color: Constants.identityColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
