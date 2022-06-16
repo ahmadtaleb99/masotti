@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -377,11 +378,11 @@ showDialog(barrierDismissible :false , context: contexts, builder: (context){
     try {
       setState(() => isLoading = 1);
       final String url = 'login-customer';
-      // final FirebaseMessaging fcm = FirebaseMessaging.instance;
-      // final tokenResponse = await (fcm.getToken() as Future<String?>);
-      // credentials['device_token'] =
-      // tokenResponse != null ? tokenResponse : null;
-
+      final FirebaseMessaging fcm = FirebaseMessaging.instance;
+      final tokenResponse = await (fcm.getToken() as Future<String?>);
+      credentials['device_token'] =
+      tokenResponse != null ? tokenResponse : null;
+      log(tokenResponse.toString() + ' : : :: : : :  :: : : : : : :: : : : : : : : :: : ');
 
 
       final data = await NetworkingHelper.postData( url, body: credentials);
