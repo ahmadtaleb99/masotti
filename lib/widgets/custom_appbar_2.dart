@@ -159,7 +159,7 @@ class CustomAppBarWidgetState extends State<CustomAppBarWidget> {
             ),
           ),
         ),
-       if(Platform.isIOS || widget.showBackButton != null) InkWell(
+       if(Platform.isIOS && widget.showBackButton != null) InkWell(
           onTap: ()  {
          Navigator.pop(context);
           },
