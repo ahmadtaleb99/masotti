@@ -48,6 +48,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
       appBar: CustomAppBarWidget(
         title: 'Privacy Policy',
         currentContext: context,
+        showBackButton: true,
         itemsInCart: itemsInCart,
         cartIconExist: authenticated ? true : false,
       ),

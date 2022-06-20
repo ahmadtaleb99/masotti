@@ -68,6 +68,8 @@ class AddAddressIOSState extends State<AddAddressIOS> {
           title: 'Add Address',
           currentContext: context,
           itemsInCart: itemsInCart,
+          showBackButton: true,
+
           cartIconExist: true,
         ),
         drawer: SideMenu(),

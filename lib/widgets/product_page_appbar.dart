@@ -112,24 +112,24 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                   onPressed: () => widget.scaffoldKey!.currentState!.openDrawer(),
                 )),
           ),
-          // Align(
-          //   alignment: arabicLanguage ? Alignment.topLeft : Alignment.topRight,
-          //   child: Container(
-          //       width: 60,
-          //       height: 40,
-          //       margin: EdgeInsets.only(top: 40),
-          //       decoration: BoxDecoration(
-          //           borderRadius: backButtonRadius, color: Constants.whiteColor),
-          //       child: IconButton(
-          //         icon: Transform(
-          //           alignment: Alignment.center,
-          //           transform: Matrix4.rotationY(math.pi),
-          //           child: Icon(Icons.arrow_back_ios_rounded),
-          //         ),
-          //         color: Constants.identityColor,
-          //         onPressed: () => Navigator.pop(context),
-          //       )),
-          // ),
+          Align(
+            alignment: arabicLanguage ? Alignment.topLeft : Alignment.topRight,
+            child: Container(
+                width: 60,
+                height: 40,
+                margin: EdgeInsets.only(top: 40),
+                decoration: BoxDecoration(
+                    borderRadius: backButtonRadius, color: Constants.whiteColor),
+                child: IconButton(
+                  icon: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(math.pi),
+                    child: Icon(Icons.arrow_back_ios_rounded),
+                  ),
+                  color: Constants.identityColor,
+                  onPressed: () => Navigator.pop(context),
+                )),
+          ),
         ],
       ),
     );

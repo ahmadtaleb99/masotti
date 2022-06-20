@@ -284,6 +284,7 @@ class ProductPageState extends State<ProductPage> {
         title: _appBarTitle,
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: true,
         cartIconExist: false,
       ) : null,
 

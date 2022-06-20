@@ -54,6 +54,8 @@ class SettingsPageState extends State<SettingsPage> {
         title: 'Settings',
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: true,
+
         cartIconExist: true,
       ),
       drawer: SideMenu(),

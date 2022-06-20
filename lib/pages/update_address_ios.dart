@@ -67,6 +67,8 @@ class UpdateAddressIOSState extends State<UpdateAddressIOS> {
         appBar: CustomAppBarWidget(
           title: 'Update Address',
           currentContext: context,
+          showBackButton: true,
+
           itemsInCart: itemsInCart,
           cartIconExist: true,
         ),

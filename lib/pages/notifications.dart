@@ -44,6 +44,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         title: 'My Notifications',
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: arabicLanguage ? true : null,
         cartIconExist: true,
       ),
       drawer: SideMenu(),

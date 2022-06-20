@@ -45,6 +45,8 @@ class _FAQsPageState extends State<FAQsPage> {
       appBar: CustomAppBarWidget(
         title: 'FAQs',
         currentContext: context,
+        showBackButton: (authenticated ? null : true)  ,
+
         itemsInCart: itemsInCart,
         cartIconExist: authenticated ? true : false,
       ),

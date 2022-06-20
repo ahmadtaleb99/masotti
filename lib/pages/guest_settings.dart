@@ -44,6 +44,8 @@ class GuestSettingsPageState extends State<GuestSettingsPage> {
         currentContext: context,
         itemsInCart: itemsInCart,
         cartIconExist: false,
+        showBackButton: true,
+
       ),
       drawer: SideMenu(),
       body: WillPopScope(

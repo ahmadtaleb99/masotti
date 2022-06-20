@@ -64,6 +64,7 @@ class _SubCategoriesPageState extends State<SubCategoriesPage> {
         title: arabicLanguage ? widget.categoryNameAr : widget.categoryNameEn,
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: true,
         cartIconExist: authenticated ? true : false,
       ),
       drawer: SideMenu(),

@@ -101,6 +101,8 @@ class ProductsPageState extends State<ProductsPage> {
                   : widget.subCategoryNameEn),
           currentContext: context,
           itemsInCart: itemsInCart,
+          showBackButton: true,
+
           cartIconExist: authenticated ? true : false,
         ),
         drawer: SideMenu(),
