@@ -51,6 +51,8 @@ class MyAddressesPageState extends State<MyAddressesPage> {
         title: 'My Addresses'.tr(),
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: true,
+
         cartIconExist: true,
       ),
       drawer: SideMenu(),

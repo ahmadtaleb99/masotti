@@ -151,6 +151,8 @@ class OfferPageState extends State<OfferPage> {
         title: 'Offers',
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton: true,
+
         cartIconExist: false,
       ),
       drawer: SideMenu(),

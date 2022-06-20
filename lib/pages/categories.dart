@@ -47,6 +47,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       backgroundColor: Constants.identityColor,
       appBar: CustomAppBarWidget(
         title: 'Categories',
+        showBackButton: true,
         currentContext: context,
         itemsInCart: itemsInCart,
         cartIconExist: authenticated ? true : false,

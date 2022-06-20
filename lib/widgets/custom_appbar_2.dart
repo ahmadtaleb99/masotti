@@ -1,5 +1,6 @@
 import 'dart:developer';
-
+import 'dart:io';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,11 +17,13 @@ class CustomAppBarWidget extends StatefulWidget implements PreferredSizeWidget {
   bool? cartIconExist;
   bool? isCartPage;
   bool? cartFromSideMenu;
+  final bool  ? showBackButton;
 
   CustomAppBarWidget(
       {required this.title,
       required this.currentContext,
       required this.itemsInCart,
+       this.showBackButton,
       this.cartIconExist,
       this.isCartPage,
       this.cartFromSideMenu});
@@ -154,6 +157,22 @@ class CustomAppBarWidgetState extends State<CustomAppBarWidget> {
               MyFlutterApp.group_526,
               color: Constants.whiteColor,
             ),
+          ),
+        ),
+       if(Platform.isIOS && widget.showBackButton != null) InkWell(
+          onTap: ()  {
+         Navigator.pop(context);
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 18, right: 10, left: 10),
+            child:   Transform(
+    alignment: Alignment.center,
+    transform: Matrix4.rotationY(arabicLanguage ?0 :  math.pi),
+    child: Icon(
+      Icons.arrow_back_ios_new,
+      color: Constants.whiteColor,
+    ),
+    ),
           ),
         ),
       ],

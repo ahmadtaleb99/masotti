@@ -44,6 +44,8 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
         currentContext: context,
         itemsInCart: itemsInCart,
         cartIconExist: true,
+        showBackButton: true,
+
       ),
       drawer: SideMenu(),
       body: WillPopScope(

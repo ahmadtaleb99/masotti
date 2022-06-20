@@ -83,6 +83,8 @@ class CartPageState extends State<CartPage> {
         itemsInCart: itemsInCart,
         cartIconExist: false,
         isCartPage: true,
+        showBackButton: true,
+
         cartFromSideMenu: widget.fromSideMenu,
       ),
       drawer: SideMenu(),

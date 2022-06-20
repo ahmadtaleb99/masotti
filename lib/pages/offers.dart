@@ -54,6 +54,8 @@ class OffersPageState extends State<OffersPage> {
       appBar: CustomAppBarWidget(
         title: 'Offers',
         currentContext: context,
+        showBackButton: true,
+
         itemsInCart: itemsInCart,
         cartIconExist: authenticated ? true : false,
       ),
