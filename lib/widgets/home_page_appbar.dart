@@ -63,6 +63,9 @@ class HomePageAppBarWidgetState extends State<HomePageAppBarWidget> {
                         CarouselSliderWidget(images: widget.images,
                           onImageTap: (index) async {
 
+                              if(widget.products![index] == 'null')
+                                        return;
+
 
                               final prefs = await SharedPreferences.getInstance();
                               Navigator.push(

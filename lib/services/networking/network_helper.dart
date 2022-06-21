@@ -18,6 +18,8 @@ class NetworkingHelper {
           .get(Uri.parse(Constants.apiUrl + url),
               headers: headers ?? {'referer': Constants.apiReferer})
           .timeout(Duration(seconds: 12));
+
+      log(response.body.toString());
       return responseJson = _returnResponse(response);
 
     } on SocketException {
@@ -49,6 +51,7 @@ throw FetchDataException(message: 'Error Occurred while getting data'.tr());
   }
 
   static dynamic _returnResponse(http.Response response) {
+
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());

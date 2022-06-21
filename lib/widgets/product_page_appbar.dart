@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:masotti/widgets/carousel_widget.dart';
@@ -112,7 +114,7 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                   onPressed: () => widget.scaffoldKey!.currentState!.openDrawer(),
                 )),
           ),
-          Align(
+        if(Platform.isIOS)  Align(
             alignment: arabicLanguage ? Alignment.topLeft : Alignment.topRight,
             child: Container(
                 width: 60,
