@@ -515,35 +515,26 @@ class ProductPageState extends State<ProductPage> {
                                             ),
                                             Material(
                                               color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: BorderRadius.circular(50),
-                                                onTap: () async {
-                                                  var imageUrl = Constants.apiFilesUrl +product.images!.first['path']!;
-                                                  var image =   await  downloadImageToCache(imageUrl:imageUrl);
+                                              child: Builder(
+                                                builder: (context) {
+                                                  return InkWell(
+                                                    borderRadius: BorderRadius.circular(50),
+                                                    onTap: () async {
+                                                     _onShare(context, product);
+                                                    }
+                                                    ,
+                                                    child: Container(
 
+                                                        padding: EdgeInsets.only(
+                                                            left:
+                                                            Constants.halfPadding),
+                                                        child: Icon(
+                                                          MyFlutterApp.share,
+                                                          color: Constants.redColor,
 
-
-                                                  log('here');
-                                                  // log(product.images!.first);
-                                                  log(product.images.toString());
-                                                  log(product.nameAr!);
-                                                  await  Share.shareFiles(
-                                                      [image.path],
-
-                                                      text:  'https://flexsolutions.biz/apps/masotti/products/view?id=' +
-                                                          product.id);
+                                                        )),
+                                                  );
                                                 }
-                                                ,
-                                                child: Container(
-
-                                                    padding: EdgeInsets.only(
-                                                        left:
-                                                        Constants.halfPadding),
-                                                    child: Icon(
-                                                      MyFlutterApp.share,
-                                                      color: Constants.redColor,
-
-                                                    )),
                                               ),
                                             ),
                                           ],
@@ -1137,4 +1128,24 @@ class ProductPageState extends State<ProductPage> {
 
   }
 
+
+
+  Future<void> _onShare(BuildContext context,Product product) async {
+    var imageUrl = Constants.apiFilesUrl +product.images!.first['path']!;
+    var image =   await  downloadImageToCache(imageUrl:imageUrl);
+    final box = context.findRenderObject() as RenderBox?;
+
+
+    log('here');
+    // log(product.images!.first);
+    log(product.images.toString());
+    log(product.nameAr!);
+    await  Share.shareFiles(
+        [image.path],
+
+        text:  'https://flexsolutions.biz/apps/masotti/products/view?id=' + product.id,
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+
+    );
+  }
 }
