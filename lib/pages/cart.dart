@@ -2443,12 +2443,12 @@ class EmptyCartWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(CustomIcons.cart,size: width > 768 ? 200 : 100, color: Constants.identityColor,),
-              SizedBox(height: 20,),
+              SizedBox(height:  width > 768 ? 50 : 20,),
               AutoSizeText(
                 'Your Cart Is Empty'.tr(),
                 style: TextStyle(
                   color: Constants.identityColor,
-                  fontSize: 20,
+                  fontSize: width > 768 ? 40 : 20 ,
                   fontWeight: FontWeight.bold
 
                 ),
