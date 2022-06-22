@@ -2433,6 +2433,8 @@ class EmptyCartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    double width = MediaQuery.of(context).size.width;
     return Center(
       child: Column(
         children: [
@@ -2440,7 +2442,7 @@ class EmptyCartWidget extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(CustomIcons.cart,size: 100, color: Constants.identityColor,),
+              Icon(CustomIcons.cart,size: width > 768 ? 200 : 100, color: Constants.identityColor,),
               SizedBox(height: 20,),
               AutoSizeText(
                 'Your Cart Is Empty'.tr(),
