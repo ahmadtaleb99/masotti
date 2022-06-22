@@ -63,6 +63,7 @@ class ProfilePageState extends State<ProfilePage> {
         title: 'Profile',
         currentContext: context,
         itemsInCart: itemsInCart,
+        showBackButton:  true,
         cartIconExist: true,
       ),
       drawer: SideMenu(),

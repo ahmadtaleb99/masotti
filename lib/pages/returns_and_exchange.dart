@@ -49,7 +49,7 @@ class _ReturnsAndExchangePageState extends State<ReturnsAndExchangePage> {
         title: 'Returns & Exchange',
         currentContext: context,
         itemsInCart: itemsInCart,
-        showBackButton: arabicLanguage  ? true : null ,
+        showBackButton: arabicLanguage ?   true : null ,
 
         cartIconExist: authenticated ? true : false,
       ),

@@ -52,6 +52,7 @@ class CustomAppBarWidgetState extends State<CustomAppBarWidget> {
       title: Padding(
         padding: EdgeInsets.only(top: 26, right: 5, left: 5),
         child: Text(widget.title!.tr().toUpperCase(),
+            overflow: TextOverflow.visible,
             style: TextStyle(
                 color: Constants.whiteColor, fontWeight: FontWeight.bold)),
       ),

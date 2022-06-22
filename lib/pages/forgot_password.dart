@@ -26,11 +26,13 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
         MediaQuery.of(context).size.width - (Constants.doublePadding);
     double imageWidth = containerWidth;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(icon: Icon(Icons.add), onPressed: () {  },color: Colors.blue,),
-      ),
+        appBar: AppBar(
+          elevation: 0,
+          leading: BackButton(
+            color: Constants.identityColor,
+          ),
+          backgroundColor: Colors.transparent,
+        ),
       backgroundColor: Constants.whiteColor,
       body: SingleChildScrollView(
         child: Column(

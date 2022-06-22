@@ -48,6 +48,13 @@ class SignupPageState extends State<SignupPage> {
     arabicLanguage =
         Localizations.localeOf(context).languageCode == 'ar' ? true : false;
     return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          leading: BackButton(
+            color: Constants.identityColor,
+          ),
+          backgroundColor: Colors.transparent,
+        ),
         backgroundColor: Constants.whiteColor,
         body: SingleChildScrollView(
             padding: EdgeInsets.only(
