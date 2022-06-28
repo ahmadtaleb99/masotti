@@ -33,7 +33,7 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print( widget.product!.images.toString());
+    print(widget.product!.images.toString());
     _pageController = PageController(initialPage: firstImage);
     Radius radius = Radius.circular(Constants.borderRadius);
     arabicLanguage =
@@ -44,7 +44,7 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
 
     BorderRadius backButtonRadius = arabicLanguage
         ? BorderRadius.only(bottomRight: radius, topRight: radius)
-        : BorderRadius.only(bottomLeft: radius, topLeft: radius) ;
+        : BorderRadius.only(bottomLeft: radius, topLeft: radius);
     double containerWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -55,17 +55,33 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
             width: containerWidth,
             height: widget.height! - 10,
             margin: EdgeInsets.only(bottom: Constants.padding),
-            child:  CarouselSliderWidget(images: widget.product!.images!.map((e) => e['path']).toList(),
-              onImageTap: (index){
+            child: CarouselSliderWidget(
+              images: widget.product!.images!.map((e) => e['path']).toList(),
+              onImageTap: (index) {
                 showDialog(
                     context: context,
                     builder: (context) {
                       firstImage = index;
-                      _pageController =
-                          PageController(initialPage: firstImage);
+                      _pageController = PageController(initialPage: firstImage);
                       return Scaffold(
                         appBar: AppBar(
-                        backgroundColor: Colors.black,
+                          leading: Container(),
+                          actions: [
+                            Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi ),
+                              child: IconButton(
+                                onPressed: () => Navigator.pop(context),
+                                icon: Icon(
+                                  Platform.isIOS
+                                      ? Icons.arrow_back_ios
+                                      : Icons.arrow_back,
+                                ),
+                                color: Constants.whiteColor,
+                              ),
+                            )
+                          ],
+                          backgroundColor: Colors.black,
                         ),
                         backgroundColor: Colors.black,
                         body: PhotoViewGallery.builder(
@@ -85,18 +101,19 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                           loadingBuilder: (context, event) => Center(
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.grey,
-                              valueColor: new AlwaysStoppedAnimation<Color>(Constants.redColor),
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Constants.redColor),
                               value: event == null
                                   ? 0
                                   : event.cumulativeBytesLoaded /
-                                  event.expectedTotalBytes!,
+                                      event.expectedTotalBytes!,
                             ),
                           ),
                         ),
                       );
                     });
               },
-             ),
+            ),
           ),
           Align(
             alignment: arabicLanguage ? Alignment.topRight : Alignment.topLeft,
@@ -111,33 +128,36 @@ class ProductPageAppBarWidgetState extends State<ProductPageAppBarWidget> {
                     Constants.sideMenuImage,
                   ),
                   color: Constants.identityColor,
-                  onPressed: () => widget.scaffoldKey!.currentState!.openDrawer(),
+                  onPressed: () =>
+                      widget.scaffoldKey!.currentState!.openDrawer(),
                 )),
           ),
-        if(Platform.isIOS)  Align(
-            alignment: arabicLanguage ? Alignment.topLeft : Alignment.topRight,
-            child: Container(
-                width: 60,
-                height: 40,
-                margin: EdgeInsets.only(top: 40),
-                decoration: BoxDecoration(
-                    borderRadius: backButtonRadius, color: Constants.whiteColor),
-                child: IconButton(
-                  icon: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(math.pi),
-                    child: Icon(Icons.arrow_back_ios_rounded),
-                  ),
-                  color: Constants.identityColor,
-                  onPressed: () => Navigator.pop(context),
-                )),
-          ),
+          if (Platform.isIOS)
+            Align(
+              alignment:
+                  arabicLanguage ? Alignment.topLeft : Alignment.topRight,
+              child: Container(
+                  width: 60,
+                  height: 40,
+                  margin: EdgeInsets.only(top: 40),
+                  decoration: BoxDecoration(
+                      borderRadius: backButtonRadius,
+                      color: Constants.whiteColor),
+                  child: IconButton(
+                    icon: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationY(math.pi),
+                      child: Icon(Icons.arrow_back_ios_rounded),
+                    ),
+                    color: Constants.identityColor,
+                    onPressed: () => Navigator.pop(context),
+                  )),
+            ),
         ],
       ),
     );
   }
 }
-
 
 //
 // Swiper(
