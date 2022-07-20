@@ -7,6 +7,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:http/http.dart' as http;
 import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
+import 'package:masotti/services/extensions.dart';
 import 'package:masotti/widgets/request_empty_data.dart';
 import './models/pushNotificationModel.dart';
 import './pages/product.dart';
@@ -115,7 +116,7 @@ class MyAppState extends State<MyApp> {
 
         log('got initial uri');
         String id = _getProductIdFromUri(uri);
-         return ProductPage(id: id);
+        return    id.isNumeric() ?    ProductPage(id: id) : SplashScreen();
       } on PlatformException {
         // Platform messages may fail but we ignore the exception
         print('failed to get initial uri');
@@ -129,9 +130,9 @@ class MyAppState extends State<MyApp> {
     List<String> splitted = uri.toString().split('=');
     return splitted.last;
   }
-  void goToProductFromUri(Uri uri){
+  void goToProduct(String id){
     Scheduler.SchedulerBinding.instance!.addPostFrameCallback((_) async {
-      var id  = _getProductIdFromUri(uri);
+      log(id.toString()+'  2');
 
       navigatorKey.currentState!.push(MaterialPageRoute(
           builder: (context) =>
@@ -143,9 +144,13 @@ class MyAppState extends State<MyApp> {
   void _handleIncomingUri (){
 
       _incomingUriStream = UniLinks.linkStream.listen((uri) {
-        log('uri:::: '+uri.toString());
-        if(_initialUriIsHandled)
-          goToProductFromUri(Uri.parse(uri!));
+        var parsedUri = Uri.parse(uri!);
+          if(_initialUriIsHandled){
+
+          String id = _getProductIdFromUri(parsedUri);
+          if(id.isNumeric())
+          goToProduct(id);
+        }
 
         });
 
@@ -277,6 +282,7 @@ class MyAppState extends State<MyApp> {
             ),
           );
         }
+
         var response = snap.data;
         Widget? startingWidget;
         if (response is String) {
@@ -300,9 +306,15 @@ class MyAppState extends State<MyApp> {
            );
         }
 
-
-     else   startingWidget =
-            redirectToChooseLanguagePage ? FirstRunPage(productId: initialDeepLinkUri != null ? _getProductIdFromUri(initialDeepLinkUri!) : null,) : snap.data as Widget;
+ else {
+   String productId ='';
+   if(initialDeepLinkUri != null )
+     productId =  _getProductIdFromUri(initialDeepLinkUri!);
+          startingWidget =
+          redirectToChooseLanguagePage ?
+          FirstRunPage(productId: productId.isNumeric() ? productId : null)
+            : snap.data as Widget;
+        }
         return OverlaySupport(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

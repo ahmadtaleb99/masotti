@@ -4,9 +4,9 @@ import 'package:async/async.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:masotti/services/DialogService.dart';
+import 'package:masotti/services/dialog_service.dart';
 import 'package:masotti/services/networking/network_helper.dart';
-import 'package:masotti/utils.dart';
+import 'package:masotti/services/loading_service.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
 import '../assets/flutter_custom_icons.dart';
@@ -444,3 +444,4 @@ class AddAddressState extends State<AddAddress> {
     });
   }
 }
+

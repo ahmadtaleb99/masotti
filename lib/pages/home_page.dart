@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
-import 'package:masotti/services/DialogService.dart';
+import 'package:masotti/services/dialog_service.dart';
 import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
 import 'package:masotti/widgets/error_widget.dart';

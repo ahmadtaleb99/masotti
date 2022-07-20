@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masotti/widgets/colored_circular_progress_indicator.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class LoadingService {
   LoadingService._privateConstructor();

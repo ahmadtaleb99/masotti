@@ -6,7 +6,7 @@ import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_red_button.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../utils.dart';
+import '../services/loading_service.dart';
 import '../widgets/custom_appbar_2.dart';
 import 'dart:async';
 import 'dart:io';

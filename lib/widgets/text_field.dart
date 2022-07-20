@@ -6,7 +6,7 @@ import '../constants.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final Function onSaved;
-  final Function? onChanged;
+  final void Function(String)?  onChanged;
   final IconData? icon;
   final double? iconSize;
   final Function? onSubmit;
@@ -17,14 +17,16 @@ class CustomTextField extends StatelessWidget {
   bool? isPassword = false;
   bool? isPhone = false;
   bool? isCode = false;
+  TextEditingController  ? controller;
 
-  CustomTextField(
+    CustomTextField(
       {required this.label,
       required this.onSaved,
       required this.isRequired,
       this.iconSize,
       this.onSubmit,
       this.textInputAction,
+        this.controller,
       this.initialValue,
       this.onChanged,
       this.isEmail,
@@ -58,6 +60,7 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
           TextFormField(
+          controller: controller,
             textAlignVertical: TextAlignVertical.center,
             obscureText: isPassword != null ? true : false,
             decoration: InputDecoration(
@@ -116,13 +119,13 @@ class CustomTextField extends StatelessWidget {
                 : isEmail != null
                     ? TextInputType.emailAddress
                     : TextInputType.text,
-            onChanged: onChanged as void Function(String)?,
+            onChanged: onChanged ,
             initialValue: initialValue,
             validator: (value) {
               if (isPassword != null && isPassword!) {
                 return value!.length < 4
                     ? 'FIELD_VALIDATOR can\'t be less than 4 characters'
-                        .tr(args: [label])
+                        .tr(args: [label.tr()])
                     : null;
               }
               if (isEmail != null && isEmail!) {

@@ -7,7 +7,12 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:http/http.dart' as http;
+import 'package:masotti/pages/login.dart';
+import 'package:masotti/services/dialog_service.dart';
+import 'package:masotti/services/loading_service.dart';
+import 'package:masotti/services/networking/network_helper.dart';
 import 'package:masotti/widgets/custom_dialog.dart';
+import 'package:masotti/widgets/delete_account_dialog.dart';
 import '../widgets/colored_circular_progress_indicator.dart';
 import '../assets/my_flutter_app_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,15 +36,18 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AsyncMemoizer memoizer = AsyncMemoizer();
+    String? _accessToken;
   bool arabicLanguage = false;
   int isLoading = 0;
   String? selectedGender;
   int? itemsInCart = 0;
+  final _loading = LoadingService.instance;
 
   @override
   void initState() {
-    super.initState();
-    getItemsInCartCount();
+   getItemsInCartCount();
+   super.initState();
+
   }
 
   getItemsInCartCount() async {
@@ -329,51 +337,38 @@ class ProfilePageState extends State<ProfilePage> {
                         Container(
                           padding: EdgeInsets.only(
                               top: Constants.doublePadding,
-                              bottom: Constants.doublePadding),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangePasswordPage()));
-                                },
-                                child: Row(
-                                  children: [
-                                    AutoSizeText(
-                                      '<<',
-                                      style: TextStyle(
-                                        color: Constants.redColor,
-                                      ),
-                                      maxFontSize: Constants.fontSize - 2,
-                                      minFontSize: Constants.fontSize - 4,
-                                    ),
-                                    AutoSizeText(
-                                      'Change Password'.tr(),
-                                      style: TextStyle(
-                                          color: Constants.redColor,
-                                          decoration: TextDecoration.underline,
-                                          decorationThickness: 1),
-                                      maxFontSize: Constants.fontSize - 2,
-                                      minFontSize: Constants.fontSize - 4,
-                                    ),
-                                    AutoSizeText(
-                                      '>>',
-                                      style: TextStyle(
-                                        color: Constants.redColor,
-                                      ),
-                                      maxFontSize: Constants.fontSize - 2,
-                                      minFontSize: Constants.fontSize - 4,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              bottom: Constants.halfPadding),
+                          child: CustomTextButton(
+                            text: 'Change Password'.tr(),
+                            onPressed: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangePasswordPage()));
+                            },
                           ),
-                        )
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                              bottom: Constants.doublePadding),
+                          child: CustomTextButton(
+                            text: 'Delete Account'.tr(),
+                            onPressed: () async {
+                            String? password = await  DeleteAccountDialog(
+                                context: context,
+                                okButtonTitle: 'OK'.tr(),
+
+                                color: Constants.redColor,
+                                icon: "assets/images/warning.svg",
+                              ).showCustomDialog();
+                            if(password != null && password.isNotEmpty ) {
+                                    _deleteAccount(password);
+                            }
+                            },
+                          ),
+                        ),
+
                       ]);
                     }),
               ),
@@ -384,17 +379,60 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
+
+  Future<void> _deleteAccount ( String password) async {
+
+    final String url = 'delete-account';
+    try {
+      if (_accessToken != null) {
+        log('access token : $_accessToken');
+
+        _loading.show(context);
+        await Future.delayed(Duration(seconds: 2));
+        var data = await NetworkingHelper.postData(url, headers: {
+          'Authorization': 'Bearer ' + _accessToken!,
+          'referer': Constants.apiReferer
+        }, body: {'password:$password'});
+        if (data['status'] == true) {
+          Navigator.popUntil(context, ModalRoute.withName("/Home"));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        }
+        CustomDialog(
+          context: context,
+          title: 'Cannot Delete Account'.tr(),
+          message: data['message'],
+          okButtonTitle: 'OK'.tr(),
+          onPressedOkButton: () {
+            Navigator.pop(context);
+
+          },
+          color: Constants.redColor,
+          icon: "assets/images/warning.svg",
+        ).showCustomDialog();
+      }
+    }
+      catch (error){
+        showInternetErrorDialog(context);
+      }
+      finally{
+      _loading.hide();
+      }
+    }
+
+
+
+
   getCustomerInfo() async {
+    _accessToken = await _getAccessToken();
     return memoizer.runOnce(() async {
       final String url = 'get-customer-info';
-      final prefs = await SharedPreferences.getInstance();
-      String? accessToken = prefs.getString(Constants.keyAccessToken);
 
-      if (accessToken != null) {
-        log('access token : $accessToken');
+      if (_accessToken != null) {
+        log('access token : $_accessToken');
 
         final response = await http.get(Uri.parse(Constants.apiUrl + url), headers: {
-          'Authorization': 'Bearer ' + accessToken,
+          'Authorization': 'Bearer ' + _accessToken!,
           'referer': Constants.apiReferer
         });
 
@@ -412,7 +450,10 @@ class ProfilePageState extends State<ProfilePage> {
       return Constants.requestErrorMessage;
     });
   }
-
+  Future<String?> _getAccessToken()  async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(Constants.keyAccessToken);
+  }
   updateCustomerInfo(Customer customer) async {
     setState(() => isLoading = 1);
 
@@ -467,5 +508,56 @@ class ProfilePageState extends State<ProfilePage> {
       setState(() => isLoading = 0);
       return Constants.requestErrorMessage;
     }
+  }
+}
+
+class CustomTextButton extends StatelessWidget {
+  const CustomTextButton({
+    Key? key,
+    required this.text,
+    required this.onPressed
+  }) : super(key: key);
+  final String text;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Material(
+      child: InkWell(
+        onTap: onPressed,
+        child:  Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AutoSizeText(
+              '<<',
+              style: TextStyle(
+                color: Constants.redColor,
+              ),
+              maxFontSize: Constants.fontSize - 2,
+              minFontSize: Constants.fontSize - 4,
+            ),
+            AutoSizeText(
+              text,
+              style: TextStyle(
+                  color: Constants.redColor,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 1),
+              maxFontSize: Constants.fontSize - 2,
+              minFontSize: Constants.fontSize - 4,
+            ),
+            AutoSizeText(
+              '>>',
+              style: TextStyle(
+                color: Constants.redColor,
+              ),
+              maxFontSize: Constants.fontSize - 2,
+              minFontSize: Constants.fontSize - 4,
+            ),
+          ],
+        ),
+      ),
+    );
+
   }
 }
