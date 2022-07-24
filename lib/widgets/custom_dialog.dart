@@ -23,59 +23,59 @@ class CustomDialog {
       this.onPressedCancelButton,
       this.color,
       this.icon});
-
   showCustomDialog() {
     double containerWidth =
         MediaQuery.of(context!).size.width - (Constants.doublePadding);
-    showDialog(
+    showGeneralDialog(
         context: context!,
-        builder: (context) {
-          return ButtonBarTheme(
-            data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(Constants.borderRadius))),
-              titlePadding: EdgeInsets.symmetric(horizontal: 30),
-              title: Container(
-                height: 150,
-                // width: 100,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(300),
-                      bottomRight: Radius.circular(300),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[400]!,
-                        blurRadius: 5,
-                        offset: Offset(1, 1),
+        transitionBuilder: (context, a1, a2, child) {
+          return Transform.scale(
+            scale:  Curves.easeInOut.transform(a1.value),
+            child: ButtonBarTheme(
+              data: ButtonBarThemeData(alignment: MainAxisAlignment.center),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(Constants.borderRadius))),
+                titlePadding: EdgeInsets.symmetric(horizontal: 30),
+                title: Container(
+                  height: 150,
+// width: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(300),
+                        bottomRight: Radius.circular(300),
                       ),
-                    ]),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      title!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: color,
-                          fontSize: Constants.fontSize,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SvgPicture.asset(
-                      icon!,
-                    ),
-                  ],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey[400]!,
+                          blurRadius: 5,
+                          offset: Offset(1, 1),
+                        ),
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        title!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: color,
+                            fontSize: Constants.fontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SvgPicture.asset(
+                        icon!,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              content: SingleChildScrollView(
-                child: SingleChildScrollView(
+                content: SingleChildScrollView(
                   child: Column(
                     children: [
                       Text(
@@ -89,96 +89,100 @@ class CustomDialog {
                     ],
                   ),
                 ),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: onPressedCancelButton == null
+                          ? [
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 40),
+                            child: ButtonTheme(
+                              minWidth: containerWidth / 3,
+                              height: 40,
+                              child: RaisedButton(
+                                child: Text(okButtonTitle!,
+                                    style: TextStyle(
+                                        color: Constants.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Constants.fontSize - 2)),
+                                onPressed: onPressedOkButton as void
+                                Function()?,
+                                color: color,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      Constants.borderRadius),
+                                ),
+                                elevation: 5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+                          : [
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 40),
+                            child: ButtonTheme(
+                              minWidth: containerWidth / 3,
+                              height: 40,
+                              child: RaisedButton(
+                                child: Text(cancelButtonTitle!,
+
+                                    style: TextStyle(
+                                        color: Constants.identityColor,
+
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Constants.fontSize - 2)),
+                                onPressed: onPressedCancelButton as void
+                                Function()?,
+                                color: Constants.whiteColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      Constants.borderRadius),
+                                ),
+                                elevation: 5,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 40),
+                            child: ButtonTheme(
+                              minWidth: containerWidth / 3,
+                              height: 40,
+                              child: RaisedButton(
+                                child: Text(okButtonTitle!,
+                        textAlign:TextAlign.center,
+                                    style: TextStyle(
+                                        color: Constants.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Constants.fontSize - 2)),
+                                onPressed:
+                                onPressedOkButton as void Function()?,
+                                color: color,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      Constants.borderRadius),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: onPressedCancelButton == null
-                        ? [
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 40),
-                                child: ButtonTheme(
-                                  minWidth: containerWidth / 3,
-                                  height: 40,
-                                  child: RaisedButton(
-                                    child: Text(okButtonTitle!,
-                                        style: TextStyle(
-                                            color: Constants.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: Constants.fontSize - 2)),
-                                    onPressed: onPressedOkButton as void
-                                        Function()?,
-                                    color: color,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Constants.borderRadius),
-                                    ),
-                                    elevation: 5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]
-                        : [
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 40),
-                                child: ButtonTheme(
-                                  minWidth: containerWidth / 3,
-                                  height: 40,
-                                  child: RaisedButton(
-                                    child: Text(cancelButtonTitle!,
-                                        style: TextStyle(
-                                            color: Constants.identityColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: Constants.fontSize - 2)),
-                                    onPressed: onPressedCancelButton as void
-                                        Function()?,
-                                    color: Constants.whiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Constants.borderRadius),
-                                    ),
-                                    elevation: 5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 40),
-                                child: ButtonTheme(
-                                  minWidth: containerWidth / 3,
-                                  height: 40,
-                                  child: RaisedButton(
-                                    child: Text(okButtonTitle!,
-                                        style: TextStyle(
-                                            color: Constants.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: Constants.fontSize - 2)),
-                                    onPressed:
-                                        onPressedOkButton as void Function()?,
-                                    color: color,
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          Constants.borderRadius),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                  ),
-                )
-              ],
             ),
           );
-        });
+        }, pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => Container());
   }
 }
+
